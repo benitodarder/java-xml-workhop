@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE company SYSTEM "miPrimer.dtd">
+<company>
+    <employe id="e6">
+        <firstname>Paul</firstname>
+        <lastname>Enderson</lastname>
+        <genre>male</genre>
+    </employe>
+    <employe id="a2">
+        <firstname>Laura</firstname>
+        <lastname>Harris</lastname>
+        <genre>female</genre>
+    </employe>
+    <employe id="a7">
+        <firstname>Paul</firstname>
+        <lastname>Smith</lastname>
+        <genre>male</genre>
+    </employe>    
+    <employe id="b1">
+        <firstname>John</firstname>
+        <lastname>Collins</lastname>
+        <genre>male</genre>
+    </employe>
+    <employe id="b7">
+        <firstname>John</firstname>
+        <lastname></lastname>
+        <genre>male</genre>
+    </employe>
+    <record type="test">
+        <element>e1</element>
+    </record>   
+    <record type="test_02">
+        <element>e2</element>
+    </record>	     
+</company>

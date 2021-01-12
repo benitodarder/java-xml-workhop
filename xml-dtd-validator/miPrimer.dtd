@@ -1,0 +1,14 @@
+<!ELEMENT company (employe*, record*)>
+    <!ELEMENT employe (firstname, lastname, genre)>
+    <!ELEMENT firstname (#PCDATA)>
+    <!ELEMENT lastname (#PCDATA)>
+    <!ELEMENT genre (#PCDATA)>
+    <!ATTLIST employe 
+        id ID #REQUIRED
+    >
+
+    <!ELEMENT record (element)>
+    <!ELEMENT element (#PCDATA)>
+    <!ATTLIST record 
+        type CDATA #REQUIRED
+    >
