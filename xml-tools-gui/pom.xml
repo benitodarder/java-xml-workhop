@@ -6,6 +6,7 @@
         <artifactId>xml-workshop</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>xml-tools</artifactId>
+    <artifactId>xml-tools-gui</artifactId>
     <packaging>jar</packaging>
+    <name>xml-tools-gui</name>
 </project>

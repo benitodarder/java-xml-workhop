@@ -27,3 +27,6 @@ hs_err_pid*
 /xmlTests00/build/
 /xmlTests00/dist/
 /xmlTests00/nbproject/private/
+/xml-utils/target/
+/xml-tools-gui/target/
+/xml-tools-console/target/

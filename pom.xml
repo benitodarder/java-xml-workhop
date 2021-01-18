@@ -7,7 +7,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>xml-dtd-validator</module>
-        <module>xml-tools</module>
+        <module>xml-utils</module>
+        <module>xml-tools-gui</module>
+        <module>xml-tools-console</module>
     </modules>
     <properties>
         <!-- Project properties -->

@@ -44,10 +44,10 @@ class SAX2TextArea {
 class JTextAreaHandler extends DefaultHandler {
 
   /** Current JTextArea */
-  private JTextArea text;
+  private final JTextArea text;
 
   /** Store URI to prefix mappings */
-  private Map namespaceMappings;
+  private final Map namespaceMappings;
   
   private int indent = 0;
   private boolean chars = false;
@@ -67,6 +67,7 @@ class JTextAreaHandler extends DefaultHandler {
     this.namespaceMappings = new HashMap();
   }
 
+  @Override
   public void characters(char[] ch, int start, int length) throws SAXException {
     String s = new String(ch, start, length);
     if (s.trim().length() > 0) {
@@ -75,6 +76,7 @@ class JTextAreaHandler extends DefaultHandler {
     }
   }
 
+  @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
     indent--;      
     if (!chars) {
@@ -85,6 +87,7 @@ class JTextAreaHandler extends DefaultHandler {
     }
   }
 
+  @Override
   public void endPrefixMapping(String prefix) throws SAXException {
     for (Iterator i = namespaceMappings.keySet().iterator(); i.hasNext();) {
       String uri = (String) i.next();
@@ -106,6 +109,7 @@ class JTextAreaHandler extends DefaultHandler {
 //  public void skippedEntity(String name) throws SAXException {
 //  }
 
+  @Override
   public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
     if (inici) {
         text.append(indentation(indent) + "<" + qName);
@@ -119,25 +123,26 @@ class JTextAreaHandler extends DefaultHandler {
       if (prefix.equals("")) {
         prefix = "[None]";
       }
-      text.append(prefix + "=\"" + namespaceURI + "\" ");
+      text.append(" " + prefix + "=\"" + namespaceURI + "\"");
     }
 
     // Process attributes
     for (int i = 0; i < atts.getLength(); i++) {
-        text.append(atts.getLocalName(i) + "=\"" + atts.getValue(i) + "\" ");
+        text.append(" " + atts.getLocalName(i) + "=\"" + atts.getValue(i) + "\"");
       String attURI = atts.getURI(i);
       if (attURI.length() > 0) {
         String attPrefix = (String) namespaceMappings.get(attURI);
         if (attPrefix.equals("")) {
           attPrefix = "[None]";
         }
-        text.append(attPrefix + "=\"" + attURI + "\" ");        
+        text.append(" " + attPrefix + "=\"" + attURI + "\"");        
       }
     }
     text.append(">");
     indent++;
   }
 
+  @Override
   public void startPrefixMapping(String prefix, String uri)
       throws SAXException {
     namespaceMappings.put(uri, prefix);
