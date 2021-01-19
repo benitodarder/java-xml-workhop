@@ -1,16 +1,13 @@
 package local.tin.tests.xml.utils.traverse;
 
 import java.io.IOException;
-import java.io.StringReader;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import local.tin.tests.xml.utils.TestUtils;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -26,7 +23,7 @@ public class CustomTextViewTest {
             + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att01=att01 value" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att02=att02 value" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + "Element content: "
-            + TraverseTestUtils.XML_01_NODE_VALUE + System.lineSeparator();
+            + TestUtils.XML_01_NODE_VALUE + System.lineSeparator();
     public static final String SAMPLE_XML_02 = "<root>"
             + "   <nodesA>"
             + "       <nodeA att01=\"att01 value\">"
@@ -74,7 +71,7 @@ public class CustomTextViewTest {
    
     @Test
     public void getCustomXMLView_returns_expected_string_only_one_node() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TraverseTestUtils.getInstance().getDocumentFromString(TraverseTestUtils.SAMPLE_XML_01);
+        Document doc = TestUtils.getInstance().getDocumentFromString(TestUtils.SAMPLE_XML_01);
         Node node = doc.getFirstChild();
 
         String result = CustomTextView.getInstance().getCustomXMLView(node.getChildNodes());
@@ -85,7 +82,7 @@ public class CustomTextViewTest {
 
     @Test
     public void getCustomXMLView_returns_expected_string_a_list() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TraverseTestUtils.getInstance().getDocumentFromString(SAMPLE_XML_02);
+        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_02);
         Node node = doc.getFirstChild();
 
         String result = CustomTextView.getInstance().getCustomXMLView(node.getChildNodes());
@@ -96,7 +93,7 @@ public class CustomTextViewTest {
     
     @Test
     public void getCustomXMLView_returns_expected_string_a_list_without_enclosing_node() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TraverseTestUtils.getInstance().getDocumentFromString(SAMPLE_XML_03);
+        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_03);
         Node node = doc.getFirstChild();
 
         String result = CustomTextView.getInstance().getCustomXMLView(node.getChildNodes());
@@ -107,7 +104,7 @@ public class CustomTextViewTest {
     
     @Test
     public void getCustomXMLView_returns_expected_string_only_one_node_with_root() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TraverseTestUtils.getInstance().getDocumentFromString(TraverseTestUtils.SAMPLE_XML_01);
+        Document doc = TestUtils.getInstance().getDocumentFromString(TestUtils.SAMPLE_XML_01);
 
         String result = CustomTextView.getInstance().getCustomXMLView(doc);
         System.out.println(result);

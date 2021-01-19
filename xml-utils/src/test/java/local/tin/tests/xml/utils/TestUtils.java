@@ -1,4 +1,4 @@
-package local.tin.tests.xml.utils.traverse;
+package local.tin.tests.xml.utils;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -13,7 +13,7 @@ import org.xml.sax.SAXException;
  *
  * @author benitodarder
  */
-public class TraverseTestUtils {
+public class TestUtils {
 
     public static final String XML_01_NODE_VALUE = "      NodeA value 01    ";
     public static final String SAMPLE_XML_01 = "<root a=\"b\">" + System.lineSeparator()
@@ -22,16 +22,16 @@ public class TraverseTestUtils {
             + "</nodeA>"
             + "</root>";
 
-    private TraverseTestUtils() {
+    private TestUtils() {
     }
 
-    public static TraverseTestUtils getInstance() {
+    public static TestUtils getInstance() {
         return TraverseTestUtilsHolder.INSTANCE;
     }
 
     private static class TraverseTestUtilsHolder {
 
-        private static final TraverseTestUtils INSTANCE = new TraverseTestUtils();
+        private static final TestUtils INSTANCE = new TestUtils();
     }
     
 
