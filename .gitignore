@@ -21,12 +21,9 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-/xml-dtd-validator/target/
-/xml-tools-aux/nbproject/private/
-/xml-tools/target/
-/xmlTests00/build/
-/xmlTests00/dist/
-/xmlTests00/nbproject/private/
-/xml-utils/target/
-/xml-tools-gui/target/
-/xml-tools-console/target/
+**/target/**
+**/nbactions.xml
+**/nb-configuration.xml
+**/nbproject/**
+*.iml
+**/.idea/**
