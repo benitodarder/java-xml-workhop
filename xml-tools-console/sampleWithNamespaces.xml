@@ -1,0 +1,22 @@
+<root xmlns:a="http://a.b.com" xmlns:b="http://c.d.com">
+  <a:nodeA a="a" b="1" c="2021-01-19T14:08:01.000Z">Node A value</a:nodeA>
+  <a:nodesB>
+      <a:nodeB a="b">
+          <a:nodeBA d="3" e="a">
+              Node B A value 01
+          </a:nodeBA>
+          <a:nodeBA d="4" e="a">
+              Node B A value 02
+          </a:nodeBA> 
+          <a:nodeBA d="6" e="b">
+              Node B A value 03
+          </a:nodeBA>  
+          <a:nodeBA d="3" e="b">
+              Node B A value 04
+          </a:nodeBA>                                         
+      </a:nodeB>
+  </a:nodesB>
+  <b:nodeA x="z">
+      This is node A from namespace B
+  </b:nodeA>
+</root>

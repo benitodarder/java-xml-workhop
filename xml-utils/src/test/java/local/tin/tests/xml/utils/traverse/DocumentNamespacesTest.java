@@ -13,7 +13,7 @@ import org.xml.sax.SAXException;
  *
  * @author benitodarder
  */
-public class DocumentNameSpacesTest {
+public class DocumentNamespacesTest {
 
     public static final String SAMPLE_XML_02 = "<root a=\"b\" xmlns:ns01=\"http://www.a.b\">" + System.lineSeparator()
             + "   <nodeA att01=\"att01 value\" att02=\"att02 value\">"
@@ -35,7 +35,7 @@ public class DocumentNameSpacesTest {
     public void getDocumentNamespaces_returns_empty_map_when_no_namespaces() throws ParserConfigurationException, SAXException, IOException {
         Document doc = TraverseTestUtils.getInstance().getDocumentFromString(TraverseTestUtils.SAMPLE_XML_01);
 
-        Map<String, String> result = DocumentNameSpaces.getInstance().getDocumentNamespaces(doc);
+        Map<String, String> result = DocumentNamespaces.getInstance().getDocumentNamespaces(doc);
 
         assertThat(result.isEmpty(), equalTo(true));
     }
@@ -44,7 +44,7 @@ public class DocumentNameSpacesTest {
     public void getDocumentNamespaces_returns_root_namespaces() throws ParserConfigurationException, SAXException, IOException {
         Document doc = TraverseTestUtils.getInstance().getDocumentFromString(SAMPLE_XML_02);
 
-        Map<String, String> result = DocumentNameSpaces.getInstance().getDocumentNamespaces(doc);
+        Map<String, String> result = DocumentNamespaces.getInstance().getDocumentNamespaces(doc);
 
         assertThat(result.isEmpty(), equalTo(false));
         assertThat(result.size(), equalTo(1));
@@ -55,7 +55,7 @@ public class DocumentNameSpacesTest {
     public void getDocumentNamespaces_returns_inner_namespaces() throws ParserConfigurationException, SAXException, IOException {
         Document doc = TraverseTestUtils.getInstance().getDocumentFromString(SAMPLE_XML_03);
 
-        Map<String, String> result = DocumentNameSpaces.getInstance().getDocumentNamespaces(doc);
+        Map<String, String> result = DocumentNamespaces.getInstance().getDocumentNamespaces(doc);
 
         assertThat(result.isEmpty(), equalTo(false));
         assertThat(result.size(), equalTo(1));
@@ -66,7 +66,7 @@ public class DocumentNameSpacesTest {
     public void getDocumentNamespaces_returns_default_namespaces() throws ParserConfigurationException, SAXException, IOException {
         Document doc = TraverseTestUtils.getInstance().getDocumentFromString(SAMPLE_XML_04);
 
-        Map<String, String> result = DocumentNameSpaces.getInstance().getDocumentNamespaces(doc);
+        Map<String, String> result = DocumentNamespaces.getInstance().getDocumentNamespaces(doc);
 
         assertThat(result.isEmpty(), equalTo(false));
         assertThat(result.size(), equalTo(1));

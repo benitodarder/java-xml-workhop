@@ -1,15 +1,9 @@
 package local.tin.tests.xml.tools.console;
 
-import java.io.File;
-import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
 import local.tin.tests.xml.utils.traverse.CustomTextView;
-import local.tin.tests.xml.utils.traverse.DocumentNamespaces;
+import local.tin.tests.xml.utils.xpath.XPathDetails;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -18,12 +12,12 @@ import org.w3c.dom.NodeList;
  *
  * @author benitodarder
  */
-public class XPathTester {
+public class XPathTesterWithUtils {
 
-    public static final String USAGE = "Usage:\njava -jar XPathTester <options>\n-nameSpaceAware true/false\n-xPath <XPath expression>\n-file <File path and name>";
-    public static final int MAX_ARGUMENTS = 7;
+    public static final String USAGE = "Usage:\njava -jar XPathTester <options>\n-nameSpaceAware true/false\n-xPath <XPath expression>\n-file <File path and name>\n-fakeDefaultNamespace <Fake default namespace>";
+    public static final int MAX_ARGUMENTS = 9;
     public static final int MIN_ARGUMENTS = 3;
-    private static final Logger LOGGER = Logger.getLogger(XPathTester.class);
+    private static final Logger LOGGER = Logger.getLogger(XPathTesterWithUtils.class);
 
     /**
      * @param args the command line arguments
@@ -33,6 +27,7 @@ public class XPathTester {
             String xPathString = getArgument("-xpath", args);
             String filePath = getArgument("-file", args);
             String nameSpaceAware = getArgument("-nameSpaceAware", args);
+            String fakeDefaultNamespace = getArgument("-fakeDefaultNamespace", args);
             boolean isNameSpaceAware = true;
             if (nameSpaceAware != null) {
                 isNameSpaceAware = Boolean.parseBoolean(nameSpaceAware);
@@ -40,23 +35,17 @@ public class XPathTester {
             DocumentBuilderFactory domFactory;
             DocumentBuilder domBuilder;
             Document domDoc;
-            XPathFactory xFactory;
-            XPathExpression xExpression;
-            XPath xPath;
             try {
                 domFactory = DocumentBuilderFactory.newInstance();
                 domFactory.setNamespaceAware(isNameSpaceAware);
                 domBuilder = domFactory.newDocumentBuilder();
                 domDoc = domBuilder.parse(filePath);               
-                xFactory = XPathFactory.newInstance();
-                xPath = xFactory.newXPath();
-                if (isNameSpaceAware) {
-                    Map<String, String> namespaces = DocumentNamespaces.getInstance().getDocumentNamespaces(domDoc);
-                    xPath.setNamespaceContext(new NamespaceResolver(namespaces));
-                    xPathString = addDefaultNameSpace(xPathString);
-                }                 
-                xExpression = xPath.compile(xPathString);
-                NodeList result00 = (NodeList) xExpression.evaluate(domDoc, XPathConstants.NODESET);
+                XPathDetails xPathDetails = new XPathDetails();
+                xPathDetails.setDocument(domDoc);
+                xPathDetails.setFakeDefaultNamespacePrefix(fakeDefaultNamespace);
+                xPathDetails.setNamespaceAware(isNameSpaceAware);
+                xPathDetails.setXpathExpression(xPathString);
+                NodeList result00 = local.tin.tests.xml.utils.xpath.XPathTester.getInstance().getResult(xPathDetails);
                 LOGGER.info("Source xml file: " + filePath);
                 LOGGER.info(CustomTextView.getInstance().getCustomXMLView(domDoc));
                 LOGGER.info("XPath expression: " + xPathString);
@@ -87,29 +76,5 @@ public class XPathTester {
         return args[i + 1];
     }
     
-    private static String addDefaultNameSpace(String xPathString) {
-        String[] split = xPathString.split("/");
-        StringBuilder stringBuilder = new StringBuilder();
-        int i = 0;
-        if ("".equals(split[i])) {
-            stringBuilder.append("/");
-            i++;
-        }
-        if ("".equals(split[i])) {
-            stringBuilder.append("/");
-            i++;
-        }
-        for (; i < split.length; i++) {
-            if ("".equals(split[i])) {
-            } else if (!split[i].contains(NamespaceResolver.NAMESPACE_SEPARATOR)) {
-                stringBuilder.append(NamespaceResolver.DEFAULT_NAMESPACE_PREFIX).append(NamespaceResolver.NAMESPACE_SEPARATOR).append(split[i]);  
-            } else {
-                stringBuilder.append(split[i]);
-            }
-            if (i < split.length - 1) {
-                stringBuilder.append("/");
-            }
-        }
-        return stringBuilder.toString();
-    }
+
 }

@@ -2,11 +2,6 @@ package local.tin.tests.xml.utils.traverse;
 
 import java.util.HashMap;
 import java.util.Map;
-import static local.tin.tests.xml.utils.traverse.CustomTextView.ATTRIBUTES;
-import static local.tin.tests.xml.utils.traverse.CustomTextView.ATTRIBUTE_SEPARATOR;
-import static local.tin.tests.xml.utils.traverse.CustomTextView.ELEMENT_CONTENT;
-import static local.tin.tests.xml.utils.traverse.CustomTextView.ELEMENT_NAME;
-import static local.tin.tests.xml.utils.traverse.CustomTextView.INDENT_CHARACTER;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -16,18 +11,18 @@ import org.w3c.dom.NodeList;
  *
  * @author benitodarder
  */
-public class DocumentNameSpaces {
+public class DocumentNamespaces {
 
-    private DocumentNameSpaces() {
+    private DocumentNamespaces() {
     }
 
-    public static DocumentNameSpaces getInstance() {
+    public static DocumentNamespaces getInstance() {
         return DocumentNameSpacesHolder.INSTANCE;
     }
 
     private static class DocumentNameSpacesHolder {
 
-        private static final DocumentNameSpaces INSTANCE = new DocumentNameSpaces();
+        private static final DocumentNamespaces INSTANCE = new DocumentNamespaces();
     }
 
     /**
