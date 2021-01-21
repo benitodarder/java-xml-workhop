@@ -2,7 +2,7 @@ package local.tin.tests.xml.tools.console;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import local.tin.tests.xml.utils.traverse.CustomTextView;
+import local.tin.tests.xml.utils.text.CustomTextView;
 import local.tin.tests.xml.utils.xpath.XPathDetails;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;

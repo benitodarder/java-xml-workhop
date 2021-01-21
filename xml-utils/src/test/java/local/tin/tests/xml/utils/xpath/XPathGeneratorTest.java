@@ -57,6 +57,8 @@ public class XPathGeneratorTest {
             + "    </nodeA>\n"
             + "    <nodeB c=\"2021-01-20T00:00:00.000Z\">meh</nodeB>\n"
             + "</root>";
+    private static final String XPATH_NODEA = "root/nodeA";
+    private static final String XPATH_NODEA_NODEAA = "root/nodeA/nodeAA";
 
     @Test
     public void getDocumentXPaths_returns_expected_paths_for_one_node_no_attributes() throws ParserConfigurationException, SAXException, IOException {
@@ -65,7 +67,7 @@ public class XPathGeneratorTest {
         Set<String> result = XPathGenerator.getInstance().getDocumentXPaths(document);
 
         assertThat(result.size(), equalTo(1));
-        assertThat(result.contains("root/nodeA"), equalTo(true));
+        assertThat(result.contains(XPATH_NODEA), equalTo(true));
     }
 
     @Test
@@ -75,8 +77,8 @@ public class XPathGeneratorTest {
         Set<String> result = XPathGenerator.getInstance().getDocumentXPaths(document);
 
         assertThat(result.size(), equalTo(2));
-        assertThat(result.contains("root/nodeA"), equalTo(true));
-        assertThat(result.contains("root/nodeA/nodeAA"), equalTo(true));
+        assertThat(result.contains(XPATH_NODEA), equalTo(true));
+        assertThat(result.contains(XPATH_NODEA_NODEAA), equalTo(true));
     }
 
     @Test
@@ -86,8 +88,8 @@ public class XPathGeneratorTest {
         Set<String> result = XPathGenerator.getInstance().getDocumentXPaths(document);
 
         assertThat(result.size(), equalTo(2));
-        assertThat(result.contains("root/nodeA"), equalTo(true));
-        assertThat(result.contains("root/nodeA/nodeAA"), equalTo(true));
+        assertThat(result.contains(XPATH_NODEA), equalTo(true));
+        assertThat(result.contains(XPATH_NODEA_NODEAA), equalTo(true));
     }
 
     @Test
@@ -97,11 +99,11 @@ public class XPathGeneratorTest {
         Set<String> result = XPathGenerator.getInstance().getDocumentXPaths(document);
 
         assertThat(result.size(), equalTo(3));
-        assertThat(result.contains("root/nodeA"), equalTo(true));
+        assertThat(result.contains(XPATH_NODEA), equalTo(true));
         assertThat(result.contains("root/nodeA/nodeAA[@a='b']"), equalTo(true));
         assertThat(result.contains("root/nodeA/nodeAA[@a='c']"), equalTo(true));
     }
-    
+
     @Test
     public void getDocumentXPaths_returns_expected_paths_nodes_subnodes_attributes() throws ParserConfigurationException, SAXException, IOException {
         Document document = TestUtils.getInstance().getDocumentFromString(NODES_SUBNODES_ATTRIBUTES);
@@ -109,9 +111,9 @@ public class XPathGeneratorTest {
         Set<String> result = XPathGenerator.getInstance().getDocumentXPaths(document);
 
         assertThat(result.size(), equalTo(4));
-        assertThat(result.contains("root/nodeA"), equalTo(true));
+        assertThat(result.contains(XPATH_NODEA), equalTo(true));
         assertThat(result.contains("root/nodeA/nodeAA[@a='b' and @b='3']"), equalTo(true));
         assertThat(result.contains("root/nodeA/nodeAA[@a='c']"), equalTo(true));
         assertThat(result.contains("root/nodeB[@c='2021-01-20T00:00:00.000Z']"), equalTo(true));
-    }    
+    }
 }

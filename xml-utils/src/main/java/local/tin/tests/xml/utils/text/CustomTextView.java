@@ -1,4 +1,4 @@
-package local.tin.tests.xml.utils.traverse;
+package local.tin.tests.xml.utils.text;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;

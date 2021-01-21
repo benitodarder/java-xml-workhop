@@ -1,6 +1,8 @@
 package local.tin.tests.xml.utils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -45,4 +47,27 @@ public class TestUtils {
         return docBuilder.parse(is);
     }
     
+    /**
+     * Returns a String containing the content of the file from resources
+     * folder.
+     *
+     * @param klass Class to state the package
+     * @param fileName String
+     * @return String
+     * @throws java.io.IOException
+     */
+    public String getFileAsString(Class klass, String fileName) throws IOException {
+        InputStreamReader fileInputStream = new InputStreamReader(klass.getResourceAsStream(fileName));
+        BufferedReader bufferedReader = new BufferedReader(fileInputStream);
+        StringBuilder stringBuilder = new StringBuilder();
+        String string = bufferedReader.readLine();
+        while (string != null) {
+            stringBuilder.append(string);
+            string = bufferedReader.readLine();
+            if (string != null) {
+                stringBuilder.append(System.lineSeparator());
+            }
+        }
+        return stringBuilder.toString();
+    }       
 }

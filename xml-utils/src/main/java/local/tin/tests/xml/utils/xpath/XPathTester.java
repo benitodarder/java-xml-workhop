@@ -1,5 +1,6 @@
 package local.tin.tests.xml.utils.xpath;
 
+import local.tin.tests.xml.utils.namespaces.NamespaceResolver;
 import java.util.Map;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -7,7 +8,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import local.tin.tests.xml.utils.XMLUtilsException;
-import local.tin.tests.xml.utils.traverse.DocumentNamespaces;
+import local.tin.tests.xml.utils.namespaces.DocumentNamespaces;
 import org.apache.log4j.Logger;
 import org.w3c.dom.NodeList;
 

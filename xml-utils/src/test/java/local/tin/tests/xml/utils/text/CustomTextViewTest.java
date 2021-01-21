@@ -1,4 +1,4 @@
-package local.tin.tests.xml.utils.traverse;
+package local.tin.tests.xml.utils.text;
 
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;

@@ -1,4 +1,4 @@
-package local.tin.tests.xml.utils.traverse;
+package local.tin.tests.xml.utils.namespaces;
 
 import java.util.HashMap;
 import java.util.Map;

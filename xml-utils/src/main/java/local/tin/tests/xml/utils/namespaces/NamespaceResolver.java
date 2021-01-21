@@ -1,4 +1,4 @@
-package local.tin.tests.xml.utils.xpath;
+package local.tin.tests.xml.utils.namespaces;
 
 import java.util.Iterator;
 import java.util.Map;

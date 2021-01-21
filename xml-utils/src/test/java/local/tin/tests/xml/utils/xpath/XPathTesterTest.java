@@ -1,5 +1,6 @@
 package local.tin.tests.xml.utils.xpath;
 
+import local.tin.tests.xml.utils.namespaces.NamespaceResolver;
 import java.util.HashMap;
 import java.util.Map;
 import javax.xml.xpath.XPath;
@@ -8,7 +9,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import local.tin.tests.xml.utils.XMLUtilsException;
-import local.tin.tests.xml.utils.traverse.DocumentNamespaces;
+import local.tin.tests.xml.utils.namespaces.DocumentNamespaces;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Before;
