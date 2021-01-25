@@ -8,7 +8,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import local.tin.tests.xml.utils.XMLUtilsException;
+import local.tin.tests.xml.utils.errors.XMLUtilsException;
 import local.tin.tests.xml.utils.namespaces.DocumentNamespaces;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;

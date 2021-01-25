@@ -1,5 +1,6 @@
-package local.tin.tests.xml.utils.text;
+package local.tin.tests.xml.utils;
 
+import local.tin.tests.xml.utils.CustomTextView;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import local.tin.tests.xml.utils.TestUtils;

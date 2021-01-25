@@ -8,7 +8,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
-import local.tin.tests.xml.utils.text.CustomTextView;
+import local.tin.tests.xml.utils.CustomTextView;
 import local.tin.tests.xml.utils.namespaces.DocumentNamespaces;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;

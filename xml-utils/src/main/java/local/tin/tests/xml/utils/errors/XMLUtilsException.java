@@ -1,4 +1,4 @@
-package local.tin.tests.xml.utils;
+package local.tin.tests.xml.utils.errors;
 
 /**
  *

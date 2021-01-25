@@ -1,4 +1,4 @@
-package local.tin.tests.xml.utils.nodes;
+package local.tin.tests.xml.utils;
 
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,8 +20,10 @@ public class NodesComparatorTest {
 
     private static final String TWO_SUBNODES_WITH_ATTRIBUTE_A = "twoSubnodesWithAttributesA.xml";
     private static final String TWO_SUBNODES_WITH_ATTRIBUTE_B = "twoSubnodesWithAttributesB.xml";
-    private static final String NODE_WITH_ATTRIBUTE_AND_NAMESPACE_A = "twoSubnodesWithAttributesAAndNameSpaceA.xml";
-    private static final String NODE_WITH_ATTRIBUTE_AND_NAMESPACE_B = "twoSubnodesWithAttributesBAndNameSpaceB.xml";
+    private static final String NODE_WITH_ATTRIBUTE_AND_NAMESPACE_A = "oneNodeWithAttributesAAndNameSpaceA.xml";
+    private static final String NODE_WITH_ATTRIBUTE_AND_NAMESPACE_B = "oneNodeWithAttributesBAndNameSpaceB.xml";
+    private static final String NODE_WITH_ATTRIBUTES_A_C = "oneNodeWithAttributesAC.xml";
+    private static final String NODE_WITH_ATTRIBUTES_C_A = "oneNodeWithAttributesCA.xml";    
     private Document documentA;
     private Document documentB;
     private Node nodeA;
@@ -311,4 +313,31 @@ public class NodesComparatorTest {
 
         assertThat(result, equalTo(true));
     }
+    
+    @Test
+    public void isSameNodeShallowly_returns_expected_value_for_unordered_attributes() throws IOException, ParserConfigurationException, SAXException {
+        documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTES_A_C));
+        nodeA = null;
+        for (int i = 0; i < documentA.getFirstChild().getChildNodes().getLength(); i++) {
+            if (documentA.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
+                nodeA = documentA.getFirstChild().getChildNodes().item(i);
+                break;
+            }
+
+        }
+
+        documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTES_C_A));
+        nodeB = null;
+        for (int i = 0; i < documentB.getFirstChild().getChildNodes().getLength(); i++) {
+            if (documentB.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
+                nodeB = documentB.getFirstChild().getChildNodes().item(i);
+                break;
+            }
+
+        }
+
+        boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB);
+
+        assertThat(result, equalTo(true));
+    }    
 }
