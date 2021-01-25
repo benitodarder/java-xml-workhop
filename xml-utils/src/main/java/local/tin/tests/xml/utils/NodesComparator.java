@@ -7,6 +7,7 @@ import org.w3c.dom.NodeList;
 
 /**
  *
+ * 
  * @author benitodarder
  */
 public class NodesComparator {
@@ -27,7 +28,7 @@ public class NodesComparator {
      * Returs true when nodeA and nodeB have:
      * <ul>
      * <li>Same attributes</li>
-     * <li>Same text content</li>
+     * <li>Same trimmed text content</li>
      * </ul>
      * The following aspects are not considered:
      * <ul>
@@ -66,7 +67,7 @@ public class NodesComparator {
                 }
             }
         }
-        return nodeA.getTextContent().equals(nodeB.getTextContent());
+        return getTextNodeContent(nodeA).equals(getTextNodeContent(nodeB));
     }
     private static final String ATTRIBUTE_NAMESPACE_PREFIX = "xmlns";
 
@@ -125,6 +126,21 @@ public class NodesComparator {
      * @return boolean
      */
     public boolean isSameDocument(Document documentA, Document documentB) {
-        return isSameNodeDeeply(documentA.getFirstChild(), documentB.getFirstChild());
+        if (!isSameNodeShallowly(documentA.getFirstChild(), documentB.getFirstChild())) {
+            return false;
+        }
+        return isSameNodeList(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes());
     }
+
+    private String getTextNodeContent(Node node) {
+        String textContent = "";
+        for (int i = 0, boundary = node.getChildNodes().getLength(); i < boundary; i++) {
+            if (node.getChildNodes().item(i).getNodeType() == Node.TEXT_NODE) {
+                textContent = node.getChildNodes().item(i).getTextContent();
+                break;
+            }
+        }
+        return textContent.trim();
+    }
+
 }

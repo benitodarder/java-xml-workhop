@@ -1,10 +1,11 @@
 <root xmlns:b="http://a.b.com">
     <b:nodeA>
-        <b:nodeAA a="b">
-            Node A value B
-        </b:nodeAA>
+        
         <b:nodeAA a="c">
             Node A value C
+        </b:nodeAA>   
+        <b:nodeAA a="b">
+            Node A value B
         </b:nodeAA>
     </b:nodeA>
 </root>
