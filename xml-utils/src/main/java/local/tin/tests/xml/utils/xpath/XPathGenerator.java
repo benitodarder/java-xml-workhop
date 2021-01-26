@@ -20,6 +20,7 @@ public class XPathGenerator {
     public static final String SQUARE_BRACKET_CLOSE = "]";
     public static final String SQUARE_BRACKET_OPEN = "[";
     public static final String XPATH_COMPONENT_SEPARATOR = "/";
+    public static final String NAMESPACE_PREFIX_SEPARATOR = ":";
 
     private XPathGenerator() {
     }
@@ -36,6 +37,8 @@ public class XPathGenerator {
     /**
      * Returns a set with all XPath available from the given document.
      *
+     * Namespace prefixes are ignored and not included in the XPath expressions.
+     * 
      * @param document as Document
      * @return Set of String
      */
@@ -45,7 +48,7 @@ public class XPathGenerator {
         int attributsLengh = attributs.getLength();
         for (int attributsIndex = 0; attributsIndex < attributsLengh; attributsIndex++) {
             if (attributs.item(attributsIndex).getNodeType() == Node.ATTRIBUTE_NODE) {
-//                namespaces.put(attributs.item(attributsIndex).getNodeName(), attributs.item(attributsIndex).getNodeValue());
+
             }
         }
         traverse(document.getFirstChild().getChildNodes(), namespaces, document.getFirstChild().getNodeName());
@@ -59,7 +62,7 @@ public class XPathGenerator {
             Node aNode = rootNode.item(index);
             if (aNode.getNodeType() == Node.ELEMENT_NODE) {
                 stringBuilder.setLength(0);
-                stringBuilder.append(accumulatedPath).append(XPATH_COMPONENT_SEPARATOR).append(aNode.getNodeName());
+                stringBuilder.append(accumulatedPath).append(XPATH_COMPONENT_SEPARATOR).append(getNodeNameWithoutNamespacePrefix(aNode));
                 NamedNodeMap attributs = aNode.getAttributes();
                 if (attributs != null) {
                     stringBuilderAttributes.setLength(0);
@@ -83,6 +86,14 @@ public class XPathGenerator {
                 }
             }
         }
+    }
+
+    private String getNodeNameWithoutNamespacePrefix(Node aNode) {
+        String nodeName = aNode.getNodeName();
+        if (nodeName.contains(NAMESPACE_PREFIX_SEPARATOR)) {
+            nodeName = nodeName.substring(nodeName.indexOf(NAMESPACE_PREFIX_SEPARATOR) + 1);
+        }
+        return nodeName;
     }
 
 }

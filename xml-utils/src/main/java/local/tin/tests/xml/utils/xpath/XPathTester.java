@@ -66,10 +66,14 @@ public class XPathTester {
             stringBuilder.append(XPATH_COMPONENT_SEPARATOR);
             i++;
         }
+        int rootAt = -1;
+        if (i == 0) {
+            rootAt = i;
+        }
         for (; i < split.length; i++) {
             if (EMPTY_STRING.equals(split[i])) {
                 LOGGER.debug(NO_OP_MESSAGE);
-            } else if (!split[i].contains(NamespaceResolver.NAMESPACE_SEPARATOR)) {
+            } else if (!split[i].contains(NamespaceResolver.NAMESPACE_SEPARATOR) && i > rootAt) {
                 stringBuilder.append(fakeDefaultNamespace).append(NamespaceResolver.NAMESPACE_SEPARATOR).append(split[i]);
             } else {
                 stringBuilder.append(split[i]);

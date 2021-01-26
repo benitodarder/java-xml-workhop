@@ -72,7 +72,7 @@ public class CustomTextViewTest {
    
     @Test
     public void getCustomXMLView_returns_expected_string_only_one_node() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TestUtils.getInstance().getDocumentFromString(TestUtils.SAMPLE_XML_01);
+        Document doc = TestUtils.getInstance().getDocumentFromString(TestUtils.SAMPLE_XML_01, true);
         Node node = doc.getFirstChild();
 
         String result = CustomTextView.getInstance().getCustomXMLView(node.getChildNodes());
@@ -83,7 +83,7 @@ public class CustomTextViewTest {
 
     @Test
     public void getCustomXMLView_returns_expected_string_a_list() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_02);
+        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_02, true);
         Node node = doc.getFirstChild();
 
         String result = CustomTextView.getInstance().getCustomXMLView(node.getChildNodes());
@@ -94,7 +94,7 @@ public class CustomTextViewTest {
     
     @Test
     public void getCustomXMLView_returns_expected_string_a_list_without_enclosing_node() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_03);
+        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_03, true);
         Node node = doc.getFirstChild();
 
         String result = CustomTextView.getInstance().getCustomXMLView(node.getChildNodes());
@@ -105,7 +105,7 @@ public class CustomTextViewTest {
     
     @Test
     public void getCustomXMLView_returns_expected_string_only_one_node_with_root() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TestUtils.getInstance().getDocumentFromString(TestUtils.SAMPLE_XML_01);
+        Document doc = TestUtils.getInstance().getDocumentFromString(TestUtils.SAMPLE_XML_01, true);
 
         String result = CustomTextView.getInstance().getCustomXMLView(doc);
         System.out.println(result);

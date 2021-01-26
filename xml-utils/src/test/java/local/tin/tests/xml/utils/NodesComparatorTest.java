@@ -26,6 +26,8 @@ public class NodesComparatorTest {
     private static final String NODE_WITH_ATTRIBUTE_AND_NAMESPACE_B = "oneNodeWithAttributesBAndNameSpaceB.xml";
     private static final String NODE_WITH_ATTRIBUTES_A_C = "oneNodeWithAttributesAC.xml";
     private static final String NODE_WITH_ATTRIBUTES_C_A = "oneNodeWithAttributesCA.xml";
+    private static final String NODE_WITH_ATTRIBUTES_A_C_CDATA = "oneNodeWithAttributesACWithCDATA.xml";
+    private static final String NODE_WITH_ATTRIBUTES_C_A_CDATA = "oneNodeWithAttributesCAWithCDATA.xml";
     private Document documentA;
     private Document documentB;
     private Node nodeA;
@@ -33,7 +35,7 @@ public class NodesComparatorTest {
 
     @Before
     public void setUp() throws IOException, ParserConfigurationException, SAXException {
-        documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), TWO_SUBNODES_WITH_ATTRIBUTE_A));
+        documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), TWO_SUBNODES_WITH_ATTRIBUTE_A), true);
         nodeA = null;
         for (int i = 0; i < documentA.getFirstChild().getChildNodes().getLength(); i++) {
             if (documentA.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
@@ -46,7 +48,7 @@ public class NodesComparatorTest {
 
             }
         }
-        documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), TWO_SUBNODES_WITH_ATTRIBUTE_B));
+        documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), TWO_SUBNODES_WITH_ATTRIBUTE_B), true);
         nodeB = null;
         for (int i = 0; i < documentB.getFirstChild().getChildNodes().getLength(); i++) {
             if (documentB.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
@@ -66,7 +68,7 @@ public class NodesComparatorTest {
         short nodeAType = nodeA.getNodeType();
         String nodeATextContent = nodeA.getTextContent();
         String nodeANodeValue = nodeA.getNodeValue();
-        
+
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeA);
 
         assertThat(result, equalTo(true));
@@ -251,7 +253,7 @@ public class NodesComparatorTest {
         }
         System.out.println("Document A: " + PrettyPrint.getInstance().getDocumentPrettyPrinted(documentA));
         System.out.println("Document B: " + PrettyPrint.getInstance().getDocumentPrettyPrinted(documentB));
-        
+
         boolean result = NodesComparator.getInstance().isSameNodeList(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes());
 
         assertThat(result, equalTo(false));
@@ -298,7 +300,7 @@ public class NodesComparatorTest {
 
     @Test
     public void isSameNodeShallowly_ignores_namespace_attributes() throws IOException, ParserConfigurationException, SAXException {
-        documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTE_AND_NAMESPACE_A));
+        documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTE_AND_NAMESPACE_A), true);
         nodeA = null;
         for (int i = 0; i < documentA.getFirstChild().getChildNodes().getLength(); i++) {
             if (documentA.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
@@ -308,7 +310,7 @@ public class NodesComparatorTest {
 
         }
 
-        documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTE_AND_NAMESPACE_B));
+        documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTE_AND_NAMESPACE_B), true);
         nodeB = null;
         for (int i = 0; i < documentB.getFirstChild().getChildNodes().getLength(); i++) {
             if (documentB.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
@@ -325,7 +327,7 @@ public class NodesComparatorTest {
 
     @Test
     public void isSameNodeShallowly_returns_expected_value_for_unordered_attributes() throws IOException, ParserConfigurationException, SAXException {
-        documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTES_A_C));
+        documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTES_A_C), true);
         nodeA = null;
         for (int i = 0; i < documentA.getFirstChild().getChildNodes().getLength(); i++) {
             if (documentA.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
@@ -335,7 +337,7 @@ public class NodesComparatorTest {
 
         }
 
-        documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTES_C_A));
+        documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTES_C_A), true);
         nodeB = null;
         for (int i = 0; i < documentB.getFirstChild().getChildNodes().getLength(); i++) {
             if (documentB.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
@@ -352,13 +354,59 @@ public class NodesComparatorTest {
 
     @Test
     public void isSameDocument_returns_true_for_equal_documents_with_diferent_order() throws IOException, ParserConfigurationException, SAXException, TransformerException {
-        documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), TWO_SUBNODES_WITH_ATTRIBUTE_A));
-        documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), TWO_SUBNODES_WITH_ATTRIBUTE_A_REORDENED));
+        documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), TWO_SUBNODES_WITH_ATTRIBUTE_A), true);
+        documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), TWO_SUBNODES_WITH_ATTRIBUTE_A_REORDENED), true);
         System.out.println("Document A: " + PrettyPrint.getInstance().getDocumentPrettyPrinted(documentA));
         System.out.println("Document B: " + PrettyPrint.getInstance().getDocumentPrettyPrinted(documentB));
-        
+
         boolean result = NodesComparator.getInstance().isSameDocument(documentA, documentB);
 
         assertThat(result, equalTo(true));
+    }
+
+    @Test
+    public void isSameNodeShallowly_ignores_whitespaces_when_not_in_cdata() throws IOException, ParserConfigurationException, SAXException {
+        documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTES_A_C), true);
+        nodeA = null;
+        for (int i = 0; i < documentA.getFirstChild().getChildNodes().getLength(); i++) {
+            if (documentA.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
+                nodeA = documentA.getFirstChild().getChildNodes().item(i);
+                break;
+            }
+        }
+        documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTES_C_A), true);
+        nodeB = null;
+        for (int i = 0; i < documentB.getFirstChild().getChildNodes().getLength(); i++) {
+            if (documentB.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
+                nodeB = documentB.getFirstChild().getChildNodes().item(i);
+                break;
+            }
+        }
+        Document documentA0 = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTES_A_C_CDATA), true);
+        Node nodeA0 = null;
+        for (int i = 0; i < documentA0.getFirstChild().getChildNodes().getLength(); i++) {
+            if (documentA0.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
+                nodeA0 = documentA0.getFirstChild().getChildNodes().item(i);
+                break;
+            }
+
+        }
+        Document documentB0 = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), NODE_WITH_ATTRIBUTES_C_A_CDATA), true);
+        Node nodeB0 = null;
+        for (int i = 0; i < documentB0.getFirstChild().getChildNodes().getLength(); i++) {
+            if (documentB0.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
+                nodeB0 = documentB0.getFirstChild().getChildNodes().item(i);
+                break;
+            }
+        }
+        short nodeAType = nodeA.getNodeType();
+        String nodeATextContent = nodeA.getTextContent();
+        String nodeANodeValue = nodeA.getNodeValue();
+
+        boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB);
+        boolean resultCData = NodesComparator.getInstance().isSameNodeShallowly(nodeA0, nodeB0);
+
+        assertThat(result, equalTo(true));
+        assertThat(resultCData, equalTo(false));
     }
 }

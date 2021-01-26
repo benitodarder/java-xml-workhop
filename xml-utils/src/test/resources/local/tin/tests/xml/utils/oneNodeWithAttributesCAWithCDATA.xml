@@ -1,6 +1,7 @@
 <root xmlns:b="http://a.b.com">
-    
     <b:nodeAA c="d" a="b">
-        Node A value B
+         <![CDATA[
+      Node A value B
+   ]]>
     </b:nodeAA>
 </root>

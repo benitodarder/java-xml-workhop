@@ -62,7 +62,7 @@ public class XPathGeneratorTest {
 
     @Test
     public void getDocumentXPaths_returns_expected_paths_for_one_node_no_attributes() throws ParserConfigurationException, SAXException, IOException {
-        Document document = TestUtils.getInstance().getDocumentFromString(ONE_NODE_NO_ATTRIBUTS);
+        Document document = TestUtils.getInstance().getDocumentFromString(ONE_NODE_NO_ATTRIBUTS, true);
 
         Set<String> result = XPathGenerator.getInstance().getDocumentXPaths(document);
 
@@ -72,7 +72,7 @@ public class XPathGeneratorTest {
 
     @Test
     public void getDocumentXPaths_returns_expected_paths_for_one_subnodes_no_attributes() throws ParserConfigurationException, SAXException, IOException {
-        Document document = TestUtils.getInstance().getDocumentFromString(ONE_SUBNODE_NO_ATTRIBUTES);
+        Document document = TestUtils.getInstance().getDocumentFromString(ONE_SUBNODE_NO_ATTRIBUTES, true);
 
         Set<String> result = XPathGenerator.getInstance().getDocumentXPaths(document);
 
@@ -83,7 +83,7 @@ public class XPathGeneratorTest {
 
     @Test
     public void getDocumentXPaths_returns_expected_paths_for_two_subnodes_no_attributes() throws ParserConfigurationException, SAXException, IOException {
-        Document document = TestUtils.getInstance().getDocumentFromString(ONE_SUBNODE_NO_ATTRIBUTES);
+        Document document = TestUtils.getInstance().getDocumentFromString(ONE_SUBNODE_NO_ATTRIBUTES, true);
 
         Set<String> result = XPathGenerator.getInstance().getDocumentXPaths(document);
 
@@ -94,7 +94,7 @@ public class XPathGeneratorTest {
 
     @Test
     public void getDocumentXPaths_returns_expected_paths_for_two_subnodes_one_attributes() throws ParserConfigurationException, SAXException, IOException {
-        Document document = TestUtils.getInstance().getDocumentFromString(TWO_SUBNODES_ONE_ATTRIBUTE);
+        Document document = TestUtils.getInstance().getDocumentFromString(TWO_SUBNODES_ONE_ATTRIBUTE, true);
 
         Set<String> result = XPathGenerator.getInstance().getDocumentXPaths(document);
 
@@ -106,7 +106,7 @@ public class XPathGeneratorTest {
 
     @Test
     public void getDocumentXPaths_returns_expected_paths_nodes_subnodes_attributes() throws ParserConfigurationException, SAXException, IOException {
-        Document document = TestUtils.getInstance().getDocumentFromString(NODES_SUBNODES_ATTRIBUTES);
+        Document document = TestUtils.getInstance().getDocumentFromString(NODES_SUBNODES_ATTRIBUTES, true);
 
         Set<String> result = XPathGenerator.getInstance().getDocumentXPaths(document);
 
@@ -115,5 +115,15 @@ public class XPathGeneratorTest {
         assertThat(result.contains("root/nodeA/nodeAA[@a='b' and @b='3']"), equalTo(true));
         assertThat(result.contains("root/nodeA/nodeAA[@a='c']"), equalTo(true));
         assertThat(result.contains("root/nodeB[@c='2021-01-20T00:00:00.000Z']"), equalTo(true));
+    }
+
+    @Test
+    public void getDocumentXPaths_ignores_namespace_prefixes() throws ParserConfigurationException, SAXException, IOException {
+        Document document = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(XPathGenerator.class, "sampleFile01.xml"), true);
+
+        Set<String> result = XPathGenerator.getInstance().getDocumentXPaths(document);
+
+        assertThat(result.size(), equalTo(1));
+        assertThat(result.contains("root/nodeAA[@a='b' and @c='d']"), equalTo(true));
     }
 }

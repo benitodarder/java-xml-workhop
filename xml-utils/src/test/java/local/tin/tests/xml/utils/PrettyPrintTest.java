@@ -23,7 +23,7 @@ public class PrettyPrintTest {
     public void getDocumentPrettyPrinted_returns_the_expected_document_from_file() throws ParserConfigurationException, Exception {
         String sampleXML = TestUtils.getInstance().getFileAsString(PrettyPrint.class, SAMPLE_XML_FILE_NAME);
         
-        String result = PrettyPrint.getInstance().getDocumentPrettyPrinted(TestUtils.getInstance().getDocumentFromString(sampleXML));
+        String result = PrettyPrint.getInstance().getDocumentPrettyPrinted(TestUtils.getInstance().getDocumentFromString(sampleXML, true));
         
         assertThat(result, notNullValue());
     }    

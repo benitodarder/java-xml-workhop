@@ -1,13 +1,16 @@
 package local.tin.tests.xml.utils.xpath;
 
+import java.io.IOException;
 import local.tin.tests.xml.utils.namespaces.NamespaceResolver;
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import local.tin.tests.xml.utils.TestUtils;
 import local.tin.tests.xml.utils.errors.XMLUtilsException;
 import local.tin.tests.xml.utils.namespaces.DocumentNamespaces;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -23,6 +26,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -52,6 +56,9 @@ public class XPathTesterTest {
 
     @Before
     public void setUp() {
+    }
+
+    private void setUpMocks() {
         mockedXPathFactory = mock(XPathFactory.class);
         PowerMockito.mockStatic(XPathFactory.class);
         when(XPathFactory.newInstance()).thenReturn(mockedXPathFactory);
@@ -65,6 +72,7 @@ public class XPathTesterTest {
 
     @Test
     public void getResult_returns_expected_evaluation() throws XPathExpressionException, XMLUtilsException {
+        setUpMocks();
         xPathDetails.setDocument(mockedDocument);
         xPathDetails.setXpathExpression(SAMPLE_EXPRESSION_01);
         xPathDetails.setNamespaceAware(false);
@@ -78,6 +86,7 @@ public class XPathTesterTest {
 
     @Test(expected = XMLUtilsException.class)
     public void getResult_throws_expected_exception() throws XPathExpressionException, XMLUtilsException {
+        setUpMocks();
         xPathDetails.setDocument(mockedDocument);
         xPathDetails.setXpathExpression(SAMPLE_EXPRESSION_01);
         xPathDetails.setNamespaceAware(false);
@@ -90,6 +99,7 @@ public class XPathTesterTest {
 
     @Test
     public void getResult_uses_corrected_expression_when_namespace_aware_and_default_namespace() throws XPathExpressionException, XMLUtilsException {
+        setUpMocks();
         Map<String, String> map = new HashMap<>();
         map.put(NamespaceResolver.NAMESPACE_PREFIX, "default");
         map.put(NamespaceResolver.NAMESPACE_PREFIX + NamespaceResolver.NAMESPACE_SEPARATOR + "meh", "another");
@@ -107,9 +117,10 @@ public class XPathTesterTest {
 
         assertThat(result, equalTo(mockedNodeList));
     }
-    
+
     @Test
     public void getResult_uses_corrected_expression_when_namespace_aware_without_default_namespace() throws XPathExpressionException, XMLUtilsException {
+        setUpMocks();
         Map<String, String> map = new HashMap<>();
         map.put(NamespaceResolver.NAMESPACE_PREFIX + NamespaceResolver.NAMESPACE_SEPARATOR + FAKE_DEFAULT_PREFIX, "default");
         map.put(NamespaceResolver.NAMESPACE_PREFIX + NamespaceResolver.NAMESPACE_SEPARATOR + "meh", "another");
@@ -126,5 +137,26 @@ public class XPathTesterTest {
         NodeList result = XPathTester.getInstance().getResult(xPathDetails);
 
         assertThat(result, equalTo(mockedNodeList));
-    }    
+    }
+
+    @Test
+    public void getResult_returns_expected_number_of_nodes() throws IOException, ParserConfigurationException, SAXException, XMLUtilsException {
+        Document document = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(XPathTester.class, "sampleFile01.xml"), false);
+        String xPath = "root/nodeAA[@a='b' and @c='d']";
+        XPathDetails xPathDetails = new XPathDetails();
+        xPathDetails.setDocument(document);
+        xPathDetails.setNamespaceAware(false);
+        xPathDetails.setFakeDefaultNamespacePrefix(FAKE_DEFAULT_PREFIX);
+        xPathDetails.setXpathExpression(xPath);
+        Map<String, String> map = new HashMap<>();
+        map.put(NamespaceResolver.NAMESPACE_PREFIX + NamespaceResolver.NAMESPACE_SEPARATOR + "b", "http://a.b.com");
+        PowerMockito.mockStatic(DocumentNamespaces.class);
+        when(DocumentNamespaces.getInstance()).thenReturn(mockedDocumentNamespaces);
+        when(mockedDocumentNamespaces.getDocumentNamespaces(document)).thenReturn(map);
+        
+        NodeList result = XPathTester.getInstance().getResult(xPathDetails);
+
+        assertThat(result.getLength() > 0, equalTo(true));
+    }
+
 }

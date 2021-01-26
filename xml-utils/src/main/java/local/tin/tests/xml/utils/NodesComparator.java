@@ -1,5 +1,6 @@
 package local.tin.tests.xml.utils;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -7,10 +8,12 @@ import org.w3c.dom.NodeList;
 
 /**
  *
- * 
+ *
  * @author benitodarder
  */
 public class NodesComparator {
+
+    private static final String ATTRIBUTE_NAMESPACE_PREFIX = "xmlns";
 
     private NodesComparator() {
     }
@@ -25,15 +28,19 @@ public class NodesComparator {
     }
 
     /**
-     * Returs true when nodeA and nodeB have:
+     * Compares the nodes A and B:
      * <ul>
-     * <li>Same attributes</li>
-     * <li>Same trimmed text content</li>
+     * <li>Comparing attributes</li>
+     * <li>Comparing text content
+     * <ul>
+     * <li>When CDATA present comparing the exact text</li>
+     * <li>When no CDATA present trimmed text content</li>
+     * </ul>
      * </ul>
      * The following aspects are not considered:
      * <ul>
      * <li>Presence of child nodes</li>
-     * <li>Namespace</li>
+     * <li>Namespace attributes</li>
      * </ul>
      *
      * @param nodeA as Node
@@ -48,15 +55,11 @@ public class NodesComparator {
         } else {
             int attributesLEnght = nodeAAttributes.getLength();
             for (int i = 0; i < attributesLEnght; i++) {
-                if (nodeAAttributes.item(i).getNodeType() == Node.ATTRIBUTE_NODE
-                        && !nodeAAttributes.item(i).getNodeName().startsWith(ATTRIBUTE_NAMESPACE_PREFIX)) {
+                if (isNonNameSpaceAttribute(nodeAAttributes.item(i))) {
                     boolean found = false;
                     for (int j = 0; j < attributesLEnght; j++) {
 
-                        if (nodeBAttributes.item(j).getNodeType() == Node.ATTRIBUTE_NODE
-                                && !nodeBAttributes.item(j).getNodeName().startsWith(ATTRIBUTE_NAMESPACE_PREFIX)
-                                && nodeAAttributes.item(i).getNodeName().equals(nodeBAttributes.item(j).getNodeName())
-                                && nodeAAttributes.item(i).getNodeValue().equals(nodeBAttributes.item(j).getNodeValue())) {
+                        if (isSameNonNameSpaceAttribute(nodeAAttributes.item(i), nodeBAttributes.item(j))) {
                             found = true;
                             break;
                         }
@@ -67,9 +70,23 @@ public class NodesComparator {
                 }
             }
         }
-        return getTextNodeContent(nodeA).equals(getTextNodeContent(nodeB));
+        String nodeAText = getCDATANodeContent(nodeA);
+        String nodeBText = getCDATANodeContent(nodeB);
+        if (nodeAText != null && nodeBText != null) {
+            return nodeAText.equals(nodeBText);
+        }
+        nodeAText = getTextNodeContent(nodeA);
+        nodeBText = getTextNodeContent(nodeB);
+        if (nodeAText != null && nodeBText != null) {
+            return nodeAText.equals(nodeBText);
+        }
+        return false;
     }
-    private static final String ATTRIBUTE_NAMESPACE_PREFIX = "xmlns";
+
+    private  boolean isNonNameSpaceAttribute(Node node) {
+        return node.getNodeType() == Node.ATTRIBUTE_NODE
+                && !node.getNodeName().startsWith(ATTRIBUTE_NAMESPACE_PREFIX);
+    }
 
     /**
      * Compares the node shallowly and if they are equal, compare all child
@@ -133,14 +150,31 @@ public class NodesComparator {
     }
 
     private String getTextNodeContent(Node node) {
-        String textContent = "";
+        String textContent = null;
         for (int i = 0, boundary = node.getChildNodes().getLength(); i < boundary; i++) {
             if (node.getChildNodes().item(i).getNodeType() == Node.TEXT_NODE) {
+                textContent = node.getChildNodes().item(i).getTextContent().trim();
+                break;
+            }
+        }
+        return textContent;
+    }
+
+    private String getCDATANodeContent(Node node) {
+        String textContent = null;
+        for (int i = 0, boundary = node.getChildNodes().getLength(); i < boundary; i++) {
+            if (node.getChildNodes().item(i).getNodeType() == Node.CDATA_SECTION_NODE) {
                 textContent = node.getChildNodes().item(i).getTextContent();
                 break;
             }
         }
-        return textContent.trim();
+        return textContent;
     }
 
+    private boolean isSameNonNameSpaceAttribute(Node attributeA, Node attributeB) throws DOMException {
+        return attributeB.getNodeType() == Node.ATTRIBUTE_NODE
+                && !attributeB.getNodeName().startsWith(ATTRIBUTE_NAMESPACE_PREFIX)
+                && attributeA.getNodeName().equals(attributeB.getNodeName())
+                && attributeA.getNodeValue().equals(attributeB.getNodeValue());
+    }    
 }

@@ -34,7 +34,7 @@ public class DocumentNamespacesTest {
 
     @Test
     public void getDocumentNamespaces_returns_empty_map_when_no_namespaces() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TestUtils.getInstance().getDocumentFromString(TestUtils.SAMPLE_XML_01);
+        Document doc = TestUtils.getInstance().getDocumentFromString(TestUtils.SAMPLE_XML_01, true);
 
         Map<String, String> result = DocumentNamespaces.getInstance().getDocumentNamespaces(doc);
 
@@ -43,7 +43,7 @@ public class DocumentNamespacesTest {
 
     @Test
     public void getDocumentNamespaces_returns_root_namespaces() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_02);
+        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_02, true);
 
         Map<String, String> result = DocumentNamespaces.getInstance().getDocumentNamespaces(doc);
 
@@ -54,7 +54,7 @@ public class DocumentNamespacesTest {
     
     @Test
     public void getDocumentNamespaces_returns_inner_namespaces() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_03);
+        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_03, true);
 
         Map<String, String> result = DocumentNamespaces.getInstance().getDocumentNamespaces(doc);
 
@@ -65,7 +65,7 @@ public class DocumentNamespacesTest {
     
     @Test
     public void getDocumentNamespaces_returns_default_namespaces() throws ParserConfigurationException, SAXException, IOException {
-        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_04);
+        Document doc = TestUtils.getInstance().getDocumentFromString(SAMPLE_XML_04, true);
 
         Map<String, String> result = DocumentNamespaces.getInstance().getDocumentNamespaces(doc);
 

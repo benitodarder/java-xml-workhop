@@ -23,6 +23,7 @@ public class Builder {
 
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Builder.class);
     private static DocumentBuilderFactory documentBuilderFactory;
+    private static DocumentBuilderFactory documentBuilderFactoryNamespaceAware;
 
     private Builder() {
     }
@@ -43,9 +44,9 @@ public class Builder {
      * @return org.w3d.dom.Document
      * @throws local.tin.tests.xml.utils.errors.XMLUtilsException
      */
-    public Document getDocumentFromString(String string) throws XMLUtilsException {
+    public Document getDocumentFromString(String string, boolean namespaceAware) throws XMLUtilsException {
         try {
-            DocumentBuilder docBuilder = getDocumentBuilderFactory().newDocumentBuilder();
+            DocumentBuilder docBuilder = getDocumentBuilderFactory(namespaceAware).newDocumentBuilder();
             InputSource is = new InputSource();
             is.setCharacterStream(new StringReader(string));
             return docBuilder.parse(is);
@@ -62,9 +63,9 @@ public class Builder {
      * @return org.w3d.dom.Document
      * @throws local.tin.tests.xml.utils.errors.XMLUtilsException
      */
-    public Document getDocumentFromFile(String filePath) throws XMLUtilsException {
+    public Document getDocumentFromFile(String filePath, boolean namespaceAware) throws XMLUtilsException {
         try {
-            DocumentBuilder db = getDocumentBuilderFactory().newDocumentBuilder();
+            DocumentBuilder db = getDocumentBuilderFactory(namespaceAware).newDocumentBuilder();
             File file = new File(filePath);
             FileInputStream fileInputStream = new FileInputStream(file);
             return db.parse(fileInputStream);
@@ -73,7 +74,7 @@ public class Builder {
         }
     }
 
-    private DocumentBuilderFactory getDocumentBuilderFactory() throws ParserConfigurationException {
+    private DocumentBuilderFactory getDocumentBuilderFactoryNamespaceUnaware() throws ParserConfigurationException {
         synchronized (this) {
             if (documentBuilderFactory == null) {
                 documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -82,5 +83,26 @@ public class Builder {
             }
         }
         return documentBuilderFactory;
+    }
+
+   
+    private DocumentBuilderFactory getDocumentBuilderFactoryNamespaceAware() throws ParserConfigurationException {
+        synchronized (this) {
+            if (documentBuilderFactoryNamespaceAware == null) {
+                documentBuilderFactoryNamespaceAware = DocumentBuilderFactory.newInstance();
+                documentBuilderFactoryNamespaceAware.setNamespaceAware(true);
+                documentBuilderFactoryNamespaceAware.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+                documentBuilderFactoryNamespaceAware.setValidating(false);
+            }
+        }
+        return documentBuilderFactoryNamespaceAware;
+    }
+    
+    private DocumentBuilderFactory getDocumentBuilderFactory(boolean namespaceAware) throws ParserConfigurationException {
+        if (namespaceAware) {
+            return getDocumentBuilderFactoryNamespaceAware();
+        } else {
+            return getDocumentBuilderFactoryNamespaceUnaware();
+        }
     }
 }
