@@ -13,8 +13,6 @@ import org.w3c.dom.NodeList;
  */
 public class NodesComparator {
 
-    private static final String ATTRIBUTE_NAMESPACE_PREFIX = "xmlns";
-
     private NodesComparator() {
     }
 
@@ -85,7 +83,7 @@ public class NodesComparator {
 
     private  boolean isNonNameSpaceAttribute(Node node) {
         return node.getNodeType() == Node.ATTRIBUTE_NODE
-                && !node.getNodeName().startsWith(ATTRIBUTE_NAMESPACE_PREFIX);
+                && !node.getNodeName().startsWith(Common.ATTRIBUTE_XMLNS);
     }
 
     /**
@@ -173,7 +171,7 @@ public class NodesComparator {
 
     private boolean isSameNonNameSpaceAttribute(Node attributeA, Node attributeB) throws DOMException {
         return attributeB.getNodeType() == Node.ATTRIBUTE_NODE
-                && !attributeB.getNodeName().startsWith(ATTRIBUTE_NAMESPACE_PREFIX)
+                && !attributeB.getNodeName().startsWith(Common.ATTRIBUTE_XMLNS)
                 && attributeA.getNodeName().equals(attributeB.getNodeName())
                 && attributeA.getNodeValue().equals(attributeB.getNodeValue());
     }    

@@ -23,17 +23,18 @@ public class XMLComparator {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws XMLUtilsException {
-        if (args.length == 2) {
+        if (args.length >= 2) {
             Document documentA = Builder.getInstance().getDocumentFromFile(args[0], false);
             Document documentB = Builder.getInstance().getDocumentFromFile(args[1], false);
             if (NodesComparator.getInstance().isSameDocument(documentA, documentB)) {
                 LOGGER.info(args[0] + " and " + args[1] + " contain same data");
             } else {
                 LOGGER.info(args[0] + " and " + args[1] + " do not contain the same data, generating not matching XPath expressions.");
-                Set<String> xpathsA = XPathGenerator.getInstance().getDocumentXPaths(documentA);
-                Set<String> xpathsB = XPathGenerator.getInstance().getDocumentXPaths(documentB);
+                Set<String> xpathsA = XPathGenerator.getInstance().getDocumentXPaths(documentA, false);
+                Set<String> xpathsB = XPathGenerator.getInstance().getDocumentXPaths(documentB, false);
                 Set<String> unmatchedAXPathsInB = new HashSet<>();
                 Set<String> unmatchedBXpathsInA = new HashSet<>();
+                LOGGER.debug("Matching XPaths from: " + args[0] + " in " + args[1]);
                 for (String xpath : xpathsA) {
                     XPathDetails xpathDetailsA = new XPathDetails();
                     xpathDetailsA.setDocument(documentA);
@@ -45,10 +46,12 @@ public class XMLComparator {
                     xpathDetailsB.setNamespaceAware(false);
                     xpathDetailsB.setXpathExpression(xpath);
                     NodeList nodeListB = local.tin.tests.xml.utils.xpath.XPathTester.getInstance().getResult(xpathDetailsB);
+                    LOGGER.debug("XPath: " + xpath + "\nNodes in A: " + nodeListA.getLength() + "; nods in B: " + nodeListB.getLength());
                     if (!NodesComparator.getInstance().isSameNodeList(nodeListA, nodeListB)) {
                         unmatchedAXPathsInB.add(xpath);
                     }
                 }
+                LOGGER.debug("Matching XPaths from: " + args[1] + " in " + args[0]);
                 for (String xpath : xpathsB) {
                     XPathDetails xpathDetailsA = new XPathDetails();
                     xpathDetailsA.setDocument(documentA);
@@ -60,6 +63,7 @@ public class XMLComparator {
                     xpathDetailsB.setNamespaceAware(false);
                     xpathDetailsB.setXpathExpression(xpath);
                     NodeList nodeListB = local.tin.tests.xml.utils.xpath.XPathTester.getInstance().getResult(xpathDetailsB);
+                    LOGGER.debug("XPath: " + xpath + "\nNodes in A: " + nodeListA.getLength() + "; nods in B: " + nodeListB.getLength());
                     if (!NodesComparator.getInstance().isSameNodeList(nodeListA, nodeListB)) {
                         unmatchedBXpathsInA.add(xpath);
                     }

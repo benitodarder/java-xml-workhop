@@ -1,0 +1,11 @@
+<b:root xmlns:b="http://a.b.com">
+    <b:nodeA>
+        <nodeAA a="b" c="d" xmlns:ns1="http://c.d.com"
+                xmlns="http://e.f.com">
+            <nodeAAA a="1">
+                Node AAA value 01
+            </nodeAAA>
+        </nodeAA>
+    </b:nodeA>
+</b:root>
+

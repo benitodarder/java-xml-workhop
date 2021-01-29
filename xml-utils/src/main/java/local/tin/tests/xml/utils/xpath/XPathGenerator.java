@@ -2,6 +2,7 @@ package local.tin.tests.xml.utils.xpath;
 
 import java.util.HashSet;
 import java.util.Set;
+import local.tin.tests.xml.utils.Common;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -39,23 +40,26 @@ public class XPathGenerator {
      *
      * Namespace prefixes are ignored and not included in the XPath expressions.
      * 
+     * Namespace attrbutes inclusion controlled by parameter.
+     * 
      * @param document as Document
+     * @param includeNamespace as boolean
      * @return Set of String
      */
-    public Set<String> getDocumentXPaths(Document document) {
+    public Set<String> getDocumentXPaths(Document document, boolean includeNamespace) {
         Set<String> namespaces = new HashSet<>();
         NamedNodeMap attributs = document.getDocumentElement().getAttributes();
         int attributsLengh = attributs.getLength();
         for (int attributsIndex = 0; attributsIndex < attributsLengh; attributsIndex++) {
-            if (attributs.item(attributsIndex).getNodeType() == Node.ATTRIBUTE_NODE) {
+            if (!Common.getInstance().isNamespaceAttribute(attributs.item(attributsIndex)) || (isAttributeNode(attributs.item(attributsIndex)) && includeNamespace)) {
 
             }
         }
-        traverse(document.getFirstChild().getChildNodes(), namespaces, document.getFirstChild().getNodeName());
+        traverse(document.getFirstChild().getChildNodes(), namespaces, document.getFirstChild().getNodeName(), includeNamespace);
         return namespaces;
     }
 
-    private void traverse(NodeList rootNode, Set<String> xpaths, String accumulatedPath) {
+    private void traverse(NodeList rootNode, Set<String> xpaths, String accumulatedPath, boolean includeNamespace) {
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder stringBuilderAttributes = new StringBuilder();
         for (int index = 0; index < rootNode.getLength(); index++) {
@@ -68,7 +72,7 @@ public class XPathGenerator {
                     stringBuilderAttributes.setLength(0);
                     int attributsLengh = attributs.getLength();
                     for (int attributsIndex = 0; attributsIndex < attributsLengh; attributsIndex++) {
-                        if (attributs.item(attributsIndex).getNodeType() == Node.ATTRIBUTE_NODE) {
+                        if (!Common.getInstance().isNamespaceAttribute(attributs.item(attributsIndex)) || (isAttributeNode(attributs.item(attributsIndex)) && includeNamespace)) {
                             if (attributsIndex > 0) {
                                 stringBuilderAttributes.append(ATTRIBUTES_CONDITION);
                             }
@@ -82,7 +86,7 @@ public class XPathGenerator {
                 xpaths.add(stringBuilder.toString());
                 NodeList childNodes = aNode.getChildNodes();
                 if (childNodes.getLength() > 0) {
-                    traverse(childNodes, xpaths, stringBuilder.toString());
+                    traverse(childNodes, xpaths, stringBuilder.toString(), includeNamespace);
                 }
             }
         }
@@ -96,4 +100,7 @@ public class XPathGenerator {
         return nodeName;
     }
 
+    private boolean isAttributeNode(Node node) {
+        return  node.getNodeType() == Node.ATTRIBUTE_NODE;
+    }
 }

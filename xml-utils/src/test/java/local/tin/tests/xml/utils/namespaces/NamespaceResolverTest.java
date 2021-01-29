@@ -2,6 +2,7 @@ package local.tin.tests.xml.utils.namespaces;
 
 import java.util.HashMap;
 import java.util.Map;
+import local.tin.tests.xml.utils.Common;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -26,8 +27,8 @@ public class NamespaceResolverTest {
     @Before
     public void setUp() {
         map = new HashMap<>();
-        map.put(NamespaceResolver.NAMESPACE_PREFIX, XMLNS_URI_01);
-        map.put(NamespaceResolver.NAMESPACE_PREFIX + NamespaceResolver.NAMESPACE_SEPARATOR + XMLNS_02, XMLNS_URI_02);
+        map.put(Common.ATTRIBUTE_XMLNS, XMLNS_URI_01);
+        map.put(Common.ATTRIBUTE_XMLNS + NamespaceResolver.NAMESPACE_SEPARATOR + XMLNS_02, XMLNS_URI_02);
         namespaceResolver = new NamespaceResolver(XMLNS_01, map);
     }
 

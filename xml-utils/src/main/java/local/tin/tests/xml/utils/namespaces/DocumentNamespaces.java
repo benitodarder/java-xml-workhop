@@ -2,6 +2,7 @@ package local.tin.tests.xml.utils.namespaces;
 
 import java.util.HashMap;
 import java.util.Map;
+import local.tin.tests.xml.utils.Common;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -29,7 +30,7 @@ public class DocumentNamespaces {
      * Returns a map with all namespaces from the document.
      *
      * Map keys include xmlns: prefix to easily process default namespace.
-     * 
+     *
      * @param document as Document
      * @return Map of String/String
      */
@@ -38,7 +39,7 @@ public class DocumentNamespaces {
         NamedNodeMap attributs = document.getDocumentElement().getAttributes();
         int attributsLengh = attributs.getLength();
         for (int attributsIndex = 0; attributsIndex < attributsLengh; attributsIndex++) {
-            if (attributs.item(attributsIndex).getNodeType() == Node.ATTRIBUTE_NODE && attributs.item(attributsIndex).getNodeName().startsWith("xmlns")) {
+            if (Common.getInstance().isNamespaceAttribute(attributs.item(attributsIndex))) {
                 namespaces.put(attributs.item(attributsIndex).getNodeName(), attributs.item(attributsIndex).getNodeValue());
             }
         }
@@ -53,7 +54,7 @@ public class DocumentNamespaces {
             if (attributs != null) {
                 int attributsLengh = attributs.getLength();
                 for (int attributsIndex = 0; attributsIndex < attributsLengh; attributsIndex++) {
-                    if (attributs.item(attributsIndex).getNodeType() == Node.ATTRIBUTE_NODE && attributs.item(attributsIndex).getNodeName().startsWith("xmlns")) {
+                    if (Common.getInstance().isNamespaceAttribute(attributs.item(attributsIndex))) {
                         namespaces.put(attributs.item(attributsIndex).getNodeName(), attributs.item(attributsIndex).getNodeValue());
                     }
                 }

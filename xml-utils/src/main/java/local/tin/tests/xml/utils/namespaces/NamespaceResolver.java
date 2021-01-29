@@ -3,6 +3,7 @@ package local.tin.tests.xml.utils.namespaces;
 import java.util.Iterator;
 import java.util.Map;
 import javax.xml.namespace.NamespaceContext;
+import local.tin.tests.xml.utils.Common;
 
 /**
  * Allows XPath queries with default namespace.
@@ -13,7 +14,6 @@ import javax.xml.namespace.NamespaceContext;
 public class NamespaceResolver implements NamespaceContext {
     
     public static final String NAMESPACE_SEPARATOR = ":";
-    public static final String NAMESPACE_PREFIX = "xmlns";
     private static final String DEFAULT_NAMESPACE_PREFIX = "dnp";    
     private final String fakeDefaultPrefix;
     
@@ -33,9 +33,9 @@ public class NamespaceResolver implements NamespaceContext {
     @Override
     public String getNamespaceURI(String string) {
         if (getFakeDefaultPrefix().equals(string)) {
-            return namespaces.get(NAMESPACE_PREFIX);
+            return namespaces.get(Common.ATTRIBUTE_XMLNS);
         }
-        return namespaces.get(NAMESPACE_PREFIX + NAMESPACE_SEPARATOR + string);
+        return namespaces.get(Common.ATTRIBUTE_XMLNS + NAMESPACE_SEPARATOR + string);
     }
 
     @Override
