@@ -14,7 +14,7 @@ import org.w3c.dom.NodeList;
  */
 public class XPathTester {
 
-    public static final String USAGE = "Usage:\njava -jar XPathTester <options>\n-nameSpaceAware true/false\n-xPath <XPath expression>\n-file <File path and name>\n-fakeDefaultNamespace <Fake default namespace>";
+    public static final String USAGE = "Usage:\njava -jar XPathTester <options>\n-nameSpaceAware true/false\n-xpath <XPath expression>\n-file <File path and name>\n-fakeDefaultNamespace <Fake default namespace>";
     public static final int MAX_ARGUMENTS = 9;
     public static final int MIN_ARGUMENTS = 3;
     private static final Logger LOGGER = Logger.getLogger(XPathTester.class);
