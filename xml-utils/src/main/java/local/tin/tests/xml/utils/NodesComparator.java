@@ -1,5 +1,6 @@
 package local.tin.tests.xml.utils;
 
+import org.apache.log4j.Logger;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -12,6 +13,8 @@ import org.w3c.dom.NodeList;
  * @author benitodarder
  */
 public class NodesComparator {
+
+    private static final Logger LOGGER = Logger.getLogger(NodesComparator.class);
 
     private NodesComparator() {
     }
@@ -56,32 +59,36 @@ public class NodesComparator {
                 if (isNonNameSpaceAttribute(nodeAAttributes.item(i))) {
                     boolean found = false;
                     for (int j = 0; j < attributesLEnght; j++) {
-
                         if (isSameNonNameSpaceAttribute(nodeAAttributes.item(i), nodeBAttributes.item(j))) {
                             found = true;
                             break;
                         }
                     }
                     if (!found) {
+                        LOGGER.debug("Node: " + nodeA.getNodeName() + ", attribute: " + nodeAAttributes.item(i) + " unmatched in node: " + nodeB.getNodeName());
                         return false;
                     }
                 }
             }
         }
-        String nodeAText = getCDATANodeContent(nodeA);
-        String nodeBText = getCDATANodeContent(nodeB);
+        String nodeACData = getCDATANodeContent(nodeA);
+        String nodeBCData = getCDATANodeContent(nodeB);
+        if (nodeACData != null && nodeBCData != null) {
+            return nodeACData.equals(nodeBCData);
+        }
+        String nodeAText = getTextNodeContent(nodeA);
+        String nodeBText = getTextNodeContent(nodeB);
         if (nodeAText != null && nodeBText != null) {
             return nodeAText.equals(nodeBText);
         }
-        nodeAText = getTextNodeContent(nodeA);
-        nodeBText = getTextNodeContent(nodeB);
-        if (nodeAText != null && nodeBText != null) {
-            return nodeAText.equals(nodeBText);
+        if  (nodeACData == null && nodeBCData == null && nodeAText == null && nodeBText == null) {
+            return true;
         }
+        LOGGER.debug("Node: " + nodeA.getNodeName() + " unmatched CDATA and text with node: " + nodeB.getNodeName());
         return false;
     }
 
-    private  boolean isNonNameSpaceAttribute(Node node) {
+    private boolean isNonNameSpaceAttribute(Node node) {
         return node.getNodeType() == Node.ATTRIBUTE_NODE
                 && !node.getNodeName().startsWith(Common.ATTRIBUTE_XMLNS);
     }
@@ -174,5 +181,5 @@ public class NodesComparator {
                 && !attributeB.getNodeName().startsWith(Common.ATTRIBUTE_XMLNS)
                 && attributeA.getNodeName().equals(attributeB.getNodeName())
                 && attributeA.getNodeValue().equals(attributeB.getNodeValue());
-    }    
+    }
 }

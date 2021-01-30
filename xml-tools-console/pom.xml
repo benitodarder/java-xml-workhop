@@ -9,7 +9,7 @@
     <artifactId>xml-tools-console</artifactId>
     <packaging>jar</packaging>
     <properties>
-        <jar.main.class>local.tin.tests.xml.dtd.validator.Main</jar.main.class>
+        <jar.main.class>local.tin.tests.xml.tools.console.XMLComparator</jar.main.class>
     </properties>  
     <dependencies>
         <dependency>

@@ -1,0 +1,7 @@
+<root>   
+    <nodeA>        
+        <nodeAA a="b" b="3">            Node A value        </nodeAA>        
+        <nodeAA a="c" >            Node A value        </nodeAA>            
+    </nodeA>    
+    <nodeB c="2021-01-20T00:00:00.000Z">meh</nodeB>
+</root>

@@ -1,0 +1,6 @@
+<root>    
+    <nodeA>        
+        <nodeAA a="b">            Node A value       </nodeAA>        
+        <nodeAA a="c">            Node A value       </nodeAA>            
+    </nodeA>
+</root>

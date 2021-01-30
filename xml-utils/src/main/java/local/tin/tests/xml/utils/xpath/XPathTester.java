@@ -7,6 +7,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import local.tin.tests.xml.utils.Common;
 import local.tin.tests.xml.utils.errors.XMLUtilsException;
 import local.tin.tests.xml.utils.namespaces.DocumentNamespaces;
 import org.apache.log4j.Logger;
@@ -18,9 +19,7 @@ import org.w3c.dom.NodeList;
  */
 public class XPathTester {
 
-    private static final String NO_OP_MESSAGE = "Empty string in XPath expression split. Skipping";    
-    public static final String XPATH_COMPONENT_SEPARATOR = "/";
-    public static final String EMPTY_STRING = "";    
+    private static final String NO_OP_MESSAGE = "Empty string or local-name() in XPath expression split. Skipping";
     private static final Logger LOGGER = Logger.getLogger(XPathTester.class);
 
     private XPathTester() {
@@ -55,15 +54,15 @@ public class XPathTester {
     }
 
     private String addDefaultNameSpace(String xPathString, String fakeDefaultNamespace) {
-        String[] split = xPathString.split(XPATH_COMPONENT_SEPARATOR);
+        String[] split = xPathString.split(Common.XPATH_COMPONENT_SEPARATOR);
         StringBuilder stringBuilder = new StringBuilder();
         int i = 0;
-        if (EMPTY_STRING.equals(split[i])) {
-            stringBuilder.append(XPATH_COMPONENT_SEPARATOR);
+        if (Common.EMPTY_STRING.equals(split[i])) {
+            stringBuilder.append(Common.XPATH_COMPONENT_SEPARATOR);
             i++;
         }
-        if (EMPTY_STRING.equals(split[i])) {
-            stringBuilder.append(XPATH_COMPONENT_SEPARATOR);
+        if (Common.EMPTY_STRING.equals(split[i])) {
+            stringBuilder.append(Common.XPATH_COMPONENT_SEPARATOR);
             i++;
         }
         int rootAt = -1;
@@ -71,19 +70,20 @@ public class XPathTester {
             rootAt = i;
         }
         for (; i < split.length; i++) {
-            if (EMPTY_STRING.equals(split[i])) {
+            if (Common.EMPTY_STRING.equals(split[i])) {
                 LOGGER.debug(NO_OP_MESSAGE);
-            } else if (!split[i].contains(NamespaceResolver.NAMESPACE_SEPARATOR) && i > rootAt) {
-                stringBuilder.append(fakeDefaultNamespace).append(NamespaceResolver.NAMESPACE_SEPARATOR).append(split[i]);
+            } else if (split[i].contains(Common.LOCAL_NAME)) {
+                LOGGER.debug(NO_OP_MESSAGE);
+            } else if (!split[i].contains(Common.NAMESPACE_PREFIX_SEPARATOR) && i > rootAt) {
+                stringBuilder.append(fakeDefaultNamespace).append(Common.NAMESPACE_PREFIX_SEPARATOR).append(split[i]);
             } else {
                 stringBuilder.append(split[i]);
             }
             if (i < split.length - 1) {
-                stringBuilder.append(XPATH_COMPONENT_SEPARATOR);
+                stringBuilder.append(Common.XPATH_COMPONENT_SEPARATOR);
             }
         }
         return stringBuilder.toString();
     }
-
 
 }

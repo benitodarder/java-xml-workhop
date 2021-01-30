@@ -8,7 +8,12 @@ import org.w3c.dom.Node;
  */
 public class Common {
 
+    public static final String EQUAL_SIGN = " = ";
     public static final String ATTRIBUTE_XMLNS = "xmlns";
+    public static final String EMPTY_STRING = "";
+    public static final String XPATH_COMPONENT_SEPARATOR = "/";
+    public static final String NAMESPACE_PREFIX_SEPARATOR = ":";
+    public static final String LOCAL_NAME = "local-name()";
 
     private Common() {
     }

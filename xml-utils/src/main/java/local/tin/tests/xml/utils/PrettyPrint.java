@@ -3,8 +3,6 @@ package local.tin.tests.xml.utils;
 import java.io.StringWriter;
 import java.io.Writer;
 import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -22,8 +20,6 @@ public class PrettyPrint {
     
     public static final String WELL_FORMED_XML = "WELL FORMED XML";
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PrettyPrint.class);
-    private static SAXParserFactory saxParserFactory;
-    private static DocumentBuilderFactory documentBuilderFactory;
     private static TransformerFactory transformerFactory;    
 
     private PrettyPrint() {

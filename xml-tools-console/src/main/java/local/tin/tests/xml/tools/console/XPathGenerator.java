@@ -12,9 +12,9 @@ import org.w3c.dom.Document;
  */
 public class XPathGenerator {
 
-    public static final String USAGE = "Usage:\njava -cp target/xml-tools-console-0.1.0-SNAPSHOT-jar-with-dependencies.jar local.tin.tests.xml.tools.console.XPathGenerator -file <File path> -includeNamespaces <true/false>";
-    public static final int MAX_ARGUMENTS = 2;
-    public static final int MIN_ARGUMENTS = 2;
+    public static final String USAGE = "Usage:\njava -cp target/xml-tools-console-0.1.0-SNAPSHOT-jar-with-dependencies.jar local.tin.tests.xml.tools.console.XPathGenerator -file <File path>  -useLocalName <true/false>";
+    public static final int MAX_ARGUMENTS = 4;
+    public static final int MIN_ARGUMENTS = 4;
     private static final Logger LOGGER = Logger.getLogger(XPathGenerator.class);
 
     /**
@@ -24,9 +24,9 @@ public class XPathGenerator {
     public static void main(String[] args) throws XMLUtilsException {
         if (MIN_ARGUMENTS <= args.length && args.length <= MAX_ARGUMENTS) {
             String filePath = Common.getInstance().getArgument("-file", args);
-            boolean includeNamespace = Boolean.parseBoolean(Common.getInstance().getArgument("-includeNamespaces", args));
-            Document document = Builder.getInstance().getDocumentFromFile(args[0], true);
-            Set<String> xpaths = local.tin.tests.xml.utils.xpath.XPathGenerator.getInstance().getDocumentXPaths(document, includeNamespace);
+            boolean useLocalName = Boolean.parseBoolean(Common.getInstance().getArgument("-useLocalName", args));
+            Document document = Builder.getInstance().getDocumentFromFile(filePath, true);
+            Set<String> xpaths = local.tin.tests.xml.utils.xpath.XPathGenerator.getInstance().getDocumentXPaths(document, useLocalName);
             xpaths.forEach((string) -> {
                 LOGGER.info(string);
             });

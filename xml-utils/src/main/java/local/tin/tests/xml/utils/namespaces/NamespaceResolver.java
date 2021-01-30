@@ -13,7 +13,6 @@ import local.tin.tests.xml.utils.Common;
  */
 public class NamespaceResolver implements NamespaceContext {
     
-    public static final String NAMESPACE_SEPARATOR = ":";
     private static final String DEFAULT_NAMESPACE_PREFIX = "dnp";    
     private final String fakeDefaultPrefix;
     
@@ -35,7 +34,7 @@ public class NamespaceResolver implements NamespaceContext {
         if (getFakeDefaultPrefix().equals(string)) {
             return namespaces.get(Common.ATTRIBUTE_XMLNS);
         }
-        return namespaces.get(Common.ATTRIBUTE_XMLNS + NAMESPACE_SEPARATOR + string);
+        return namespaces.get(Common.ATTRIBUTE_XMLNS + Common.NAMESPACE_PREFIX_SEPARATOR + string);
     }
 
     @Override

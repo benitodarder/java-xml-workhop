@@ -24,14 +24,14 @@ public class XMLComparator {
      */
     public static void main(String[] args) throws XMLUtilsException {
         if (args.length >= 2) {
-            Document documentA = Builder.getInstance().getDocumentFromFile(args[0], false);
-            Document documentB = Builder.getInstance().getDocumentFromFile(args[1], false);
+            Document documentA = Builder.getInstance().getDocumentFromFile(args[0], true);
+            Document documentB = Builder.getInstance().getDocumentFromFile(args[1], true);
             if (NodesComparator.getInstance().isSameDocument(documentA, documentB)) {
                 LOGGER.info(args[0] + " and " + args[1] + " contain same data");
             } else {
                 LOGGER.info(args[0] + " and " + args[1] + " do not contain the same data, generating not matching XPath expressions.");
-                Set<String> xpathsA = XPathGenerator.getInstance().getDocumentXPaths(documentA, false);
-                Set<String> xpathsB = XPathGenerator.getInstance().getDocumentXPaths(documentB, false);
+                Set<String> xpathsA = XPathGenerator.getInstance().getDocumentXPaths(documentA, true);
+                Set<String> xpathsB = XPathGenerator.getInstance().getDocumentXPaths(documentB, true);
                 Set<String> unmatchedAXPathsInB = new HashSet<>();
                 Set<String> unmatchedBXpathsInA = new HashSet<>();
                 LOGGER.debug("Matching XPaths from: " + args[0] + " in " + args[1]);

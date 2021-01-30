@@ -20,8 +20,7 @@ import org.xml.sax.XMLReader;
  * @author benitodarder
  */
 public class Validation {
-    
-   public static final String WELL_FORMED_XML = "WELL FORMED XML";
+
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Validation.class);
     private static SAXParserFactory saxParserFactory;
  

@@ -1,30 +1,13 @@
 package local.tin.tests.xml.utils.xpath;
 
 import java.io.IOException;
-import local.tin.tests.xml.utils.namespaces.NamespaceResolver;
-import java.util.HashMap;
-import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import local.tin.tests.xml.utils.Common;
 import local.tin.tests.xml.utils.TestUtils;
 import local.tin.tests.xml.utils.errors.XMLUtilsException;
-import local.tin.tests.xml.utils.namespaces.DocumentNamespaces;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -33,131 +16,52 @@ import org.xml.sax.SAXException;
  *
  * @author benitodarder
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({DocumentNamespaces.class, XPathFactory.class})
 public class XPathTesterTest {
 
-    private static final String SAMPLE_EXPRESSION_01 = "gñ";
-    private static final String FAKE_DEFAULT_PREFIX = "crp";
-    private static final String SAMPLE_EXPRESSION_02 = "//thing";
-    private static final String SAMPLE_EXPRESSION_02_FAKED = "//" + FAKE_DEFAULT_PREFIX + NamespaceResolver.NAMESPACE_SEPARATOR + "thing";
-    private static DocumentNamespaces mockedDocumentNamespaces;
-    private XPathFactory mockedXPathFactory;
-    private Document mockedDocument;
-    private XPath mockedXPath;
-    private XPathExpression mockedXPathExpression;
-    private NodeList mockedNodeList;
-    private XPathDetails xPathDetails;
-
-    @BeforeClass
-    public static void setUpClass() {
-        mockedDocumentNamespaces = mock(DocumentNamespaces.class);
-
-    }
+    private static final String DEFAULT_NAMESPACE_XML = "defaultNamespace.xml";
 
     @Before
     public void setUp() {
     }
 
-    private void setUpMocks() {
-        mockedXPathFactory = mock(XPathFactory.class);
-        PowerMockito.mockStatic(XPathFactory.class);
-        when(XPathFactory.newInstance()).thenReturn(mockedXPathFactory);
-        mockedXPath = mock(XPath.class);
-        when(mockedXPathFactory.newXPath()).thenReturn(mockedXPath);
-        mockedXPathExpression = mock(XPathExpression.class);
-        mockedNodeList = mock(NodeList.class);
-        xPathDetails = new XPathDetails();
-        mockedDocument = mock(Document.class);
-    }
-
-    @Test
-    public void getResult_returns_expected_evaluation() throws XPathExpressionException, XMLUtilsException {
-        setUpMocks();
-        xPathDetails.setDocument(mockedDocument);
-        xPathDetails.setXpathExpression(SAMPLE_EXPRESSION_01);
-        xPathDetails.setNamespaceAware(false);
-        when(mockedXPath.compile(SAMPLE_EXPRESSION_01)).thenReturn(mockedXPathExpression);
-        when(mockedXPathExpression.evaluate(mockedDocument, XPathConstants.NODESET)).thenReturn(mockedNodeList);
-
-        NodeList result = XPathTester.getInstance().getResult(xPathDetails);
-
-        assertThat(result, equalTo(mockedNodeList));
-    }
-
-    @Test(expected = XMLUtilsException.class)
-    public void getResult_throws_expected_exception() throws XPathExpressionException, XMLUtilsException {
-        setUpMocks();
-        xPathDetails.setDocument(mockedDocument);
-        xPathDetails.setXpathExpression(SAMPLE_EXPRESSION_01);
-        xPathDetails.setNamespaceAware(false);
-        when(mockedXPath.compile(SAMPLE_EXPRESSION_01)).thenThrow(XPathExpressionException.class);
-        when(mockedXPathExpression.evaluate(mockedDocument, XPathConstants.NODESET)).thenReturn(mockedNodeList);
-
-        NodeList result = XPathTester.getInstance().getResult(xPathDetails);
-
-    }
-
-    @Test
-    public void getResult_uses_corrected_expression_when_namespace_aware_and_default_namespace() throws XPathExpressionException, XMLUtilsException {
-        setUpMocks();
-        Map<String, String> map = new HashMap<>();
-        map.put(Common.ATTRIBUTE_XMLNS, "default");
-        map.put(Common.ATTRIBUTE_XMLNS + NamespaceResolver.NAMESPACE_SEPARATOR + "meh", "another");
-        PowerMockito.mockStatic(DocumentNamespaces.class);
-        when(DocumentNamespaces.getInstance()).thenReturn(mockedDocumentNamespaces);
-        when(mockedDocumentNamespaces.getDocumentNamespaces(mockedDocument)).thenReturn(map);
-        xPathDetails.setDocument(mockedDocument);
-        xPathDetails.setXpathExpression(SAMPLE_EXPRESSION_02);
-        xPathDetails.setNamespaceAware(true);
-        xPathDetails.setFakeDefaultNamespacePrefix(FAKE_DEFAULT_PREFIX);
-        when(mockedXPath.compile(SAMPLE_EXPRESSION_02_FAKED)).thenReturn(mockedXPathExpression);
-        when(mockedXPathExpression.evaluate(mockedDocument, XPathConstants.NODESET)).thenReturn(mockedNodeList);
-
-        NodeList result = XPathTester.getInstance().getResult(xPathDetails);
-
-        assertThat(result, equalTo(mockedNodeList));
-    }
-
-    @Test
-    public void getResult_uses_corrected_expression_when_namespace_aware_without_default_namespace() throws XPathExpressionException, XMLUtilsException {
-        setUpMocks();
-        Map<String, String> map = new HashMap<>();
-        map.put(Common.ATTRIBUTE_XMLNS + NamespaceResolver.NAMESPACE_SEPARATOR + FAKE_DEFAULT_PREFIX, "default");
-        map.put(Common.ATTRIBUTE_XMLNS + NamespaceResolver.NAMESPACE_SEPARATOR + "meh", "another");
-        PowerMockito.mockStatic(DocumentNamespaces.class);
-        when(DocumentNamespaces.getInstance()).thenReturn(mockedDocumentNamespaces);
-        when(mockedDocumentNamespaces.getDocumentNamespaces(mockedDocument)).thenReturn(map);
-        xPathDetails.setDocument(mockedDocument);
-        xPathDetails.setXpathExpression(SAMPLE_EXPRESSION_02_FAKED);
-        xPathDetails.setNamespaceAware(true);
-        xPathDetails.setFakeDefaultNamespacePrefix(FAKE_DEFAULT_PREFIX);
-        when(mockedXPath.compile(SAMPLE_EXPRESSION_02_FAKED)).thenReturn(mockedXPathExpression);
-        when(mockedXPathExpression.evaluate(mockedDocument, XPathConstants.NODESET)).thenReturn(mockedNodeList);
-
-        NodeList result = XPathTester.getInstance().getResult(xPathDetails);
-
-        assertThat(result, equalTo(mockedNodeList));
-    }
-
-    @Test
-    public void getResult_returns_expected_number_of_nodes() throws IOException, ParserConfigurationException, SAXException, XMLUtilsException {
-        Document document = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(XPathTester.class, "sampleFile01.xml"), false);
-        String xPath = "root/nodeAA[@a='b' and @c='d']";
-        xPathDetails = new XPathDetails();
+    @Test(expected=local.tin.tests.xml.utils.errors.XMLUtilsException.class)
+    public void throw_exception_with_local_name_when_namespace_aware() throws IOException, ParserConfigurationException, SAXException, XMLUtilsException {
+        Document document = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(XPathGenerator.class, DEFAULT_NAMESPACE_XML), true);
+        XPathDetails xPathDetails = new XPathDetails();
         xPathDetails.setDocument(document);
-        xPathDetails.setNamespaceAware(false);
-        xPathDetails.setFakeDefaultNamespacePrefix(FAKE_DEFAULT_PREFIX);
-        xPathDetails.setXpathExpression(xPath);
-        Map<String, String> map = new HashMap<>();
-        map.put(Common.ATTRIBUTE_XMLNS + NamespaceResolver.NAMESPACE_SEPARATOR + "b", "http://a.b.com");
-        PowerMockito.mockStatic(DocumentNamespaces.class);
-        when(DocumentNamespaces.getInstance()).thenReturn(mockedDocumentNamespaces);
-        when(mockedDocumentNamespaces.getDocumentNamespaces(document)).thenReturn(map);
+        xPathDetails.setFakeDefaultNamespacePrefix("crap");
+        xPathDetails.setNamespaceAware(true);
+        xPathDetails.setXpathExpression("*[local-name() = 'root']/*[local-name() = 'nodeA']]/*[local-name() = 'nodeAA']");
         
         NodeList result = XPathTester.getInstance().getResult(xPathDetails);
 
-        assertThat(result.getLength() > 0, equalTo(true));
     }
-
+    
+    @Test
+    public void honors_local_name_when_namespace_unaware() throws IOException, ParserConfigurationException, SAXException, XMLUtilsException {
+        Document document = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(XPathGenerator.class, DEFAULT_NAMESPACE_XML), true);
+        XPathDetails xPathDetails = new XPathDetails();
+        xPathDetails.setDocument(document);
+        xPathDetails.setFakeDefaultNamespacePrefix("crap");
+        xPathDetails.setNamespaceAware(false);
+        xPathDetails.setXpathExpression("*[local-name() = 'root']/*[local-name() = 'nodeA']/*[local-name() = 'nodeAA']");
+        
+        NodeList result = XPathTester.getInstance().getResult(xPathDetails);
+        
+        assertThat(result.getLength(), equalTo(1));
+    }    
+    
+    @Test
+    public void honors_local_name_when_namespace_unaware_with_complex_document() throws IOException, ParserConfigurationException, SAXException, XMLUtilsException {
+        Document document = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(XPathGenerator.class, "otaHotelAvailRS.xml"), true);
+        XPathDetails xPathDetails = new XPathDetails();
+        xPathDetails.setDocument(document);
+        xPathDetails.setFakeDefaultNamespacePrefix("crap");
+        xPathDetails.setNamespaceAware(false);
+        xPathDetails.setXpathExpression("*[local-name() = 'Envelope']/*[local-name() = 'Body']/*[local-name() = 'OTA_HotelAvailRS'][@Target='Production' and @TransactionIdentifier='1-1/1' and @Version='2006']/*[local-name() = 'RoomStays']/*[local-name() = 'RoomStay'][@RPH='0' and @ResponseType='PropertyList' and @RoomStayCandidateRPH='0']");
+        
+        NodeList result = XPathTester.getInstance().getResult(xPathDetails);
+        
+        assertThat(result.getLength(), equalTo(1));
+    }     
 }

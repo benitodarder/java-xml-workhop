@@ -11,8 +11,6 @@ import org.w3c.dom.NodeList;
  */
 public class CustomTextView {
 
-    public static final String ATTRIBUTE_SEPARATOR = "=";
-    public static final String FIRST_INDENT = "";
     public static final String INDENT_CHARACTER = " ";
     public static final String ELEMENT_CONTENT = "Element content: ";
     public static final String ATTRIBUTES = "Attributes:";
@@ -56,7 +54,7 @@ public class CustomTextView {
      */
     public String getCustomXMLView(NodeList nodes) {
         StringBuilder stringBuilder = new StringBuilder();
-        traverse(nodes, stringBuilder, FIRST_INDENT);
+        traverse(nodes, stringBuilder, Common.EMPTY_STRING);
         return stringBuilder.toString();
     }
 
@@ -95,7 +93,7 @@ public class CustomTextView {
         stringBuilder.append(ATTRIBUTES).append(System.lineSeparator());
         NamedNodeMap attributs = document.getDocumentElement().getAttributes();
         for (int i = 0; i < attributs.getLength(); i++) {
-            stringBuilder.append(INDENT_CHARACTER).append(attributs.item(i).getNodeName()).append(ATTRIBUTE_SEPARATOR).append(attributs.item(i).getNodeValue()).append(System.lineSeparator());
+            stringBuilder.append(INDENT_CHARACTER).append(attributs.item(i).getNodeName()).append(Common.EQUAL_SIGN).append(attributs.item(i).getNodeValue()).append(System.lineSeparator());
         }
         stringBuilder.append(getCustomXMLView(document.getFirstChild().getChildNodes()));
         return stringBuilder.toString();
@@ -115,14 +113,14 @@ public class CustomTextView {
                         area.append(nextIndentation).append(ATTRIBUTES).append(System.lineSeparator());
                         NamedNodeMap attributs = aNode.getAttributes();
                         for (int i = 0; i < attributs.getLength(); i++) {
-                            area.append(nextNextIndentation).append(attributs.item(i).getNodeName()).append(ATTRIBUTE_SEPARATOR).append(attributs.item(i).getNodeValue()).append(System.lineSeparator());
+                            area.append(nextNextIndentation).append(attributs.item(i).getNodeName()).append(Common.EQUAL_SIGN).append(attributs.item(i).getNodeValue()).append(System.lineSeparator());
                         }
                     } else {
                         area.append(indentation).append(ELEMENT_NAME).append(aNode.getNodeName()).append(System.lineSeparator());
                         area.append(nextIndentation).append(ATTRIBUTES).append(System.lineSeparator());
                         NamedNodeMap attributs = aNode.getAttributes();
                         for (int i = 0; i < attributs.getLength(); i++) {
-                            area.append(nextNextIndentation).append(attributs.item(i).getNodeName()).append(ATTRIBUTE_SEPARATOR).append(attributs.item(i).getNodeValue()).append(System.lineSeparator());
+                            area.append(nextNextIndentation).append(attributs.item(i).getNodeName()).append(Common.EQUAL_SIGN).append(attributs.item(i).getNodeValue()).append(System.lineSeparator());
                         }
                         area.append(nextIndentation).append(ELEMENT_CONTENT);
                         area.append(childNodes.item(0).getNodeValue()).append(System.lineSeparator());

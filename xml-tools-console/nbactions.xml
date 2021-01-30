@@ -10,7 +10,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath local.tin.tests.xml.tools.console.XMLComparator ivan1.xml ivan1.xml</exec.args>
+                <exec.args>-Dlog4j.configuration=file:log4jDebug.xml -classpath %classpath local.tin.tests.xml.tools.console.XMLComparator ivan1.xml ivan1.xml</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -24,7 +24,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath local.tin.tests.xml.tools.console.XMLComparator ivan1.xml ivan1.xml</exec.args>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -Dlog4j.configuration=file:log4jDebug.xml -classpath %classpath local.tin.tests.xml.tools.console.XMLComparator ivan1.xml ivan1.xml</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -39,7 +39,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath local.tin.tests.xml.tools.console.XMLComparator ivan1.xml ivan1.xml</exec.args>
+                <exec.args>-Dlog4j.configuration=file:log4jDebug.xml -classpath %classpath local.tin.tests.xml.tools.console.XMLComparator ivan1.xml ivan1.xml</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>

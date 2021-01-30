@@ -21,8 +21,8 @@ public class CustomTextViewTest {
     public static final String XML_02_NODE_VALUE_02 = "          NodeA value 02        ";
     public static final String SAMPLE_XML_01_CUSTOM_VIEW = "Element: nodeA" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + "Attributes:" + System.lineSeparator()
-            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att01=att01 value" + System.lineSeparator()
-            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att02=att02 value" + System.lineSeparator()
+            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att01 = att01 value" + System.lineSeparator()
+            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att02 = att02 value" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + "Element content: "
             + TestUtils.XML_01_NODE_VALUE + System.lineSeparator();
     public static final String SAMPLE_XML_02 = "<root>"
@@ -39,12 +39,12 @@ public class CustomTextViewTest {
             + CustomTextView.INDENT_CHARACTER + "Attributes:" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + "Element: nodeA" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "Attributes:" + System.lineSeparator()
-            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att01=att01 value" + System.lineSeparator()
+            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att01 = att01 value" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "Element content: "
             + XML_02_NODE_VALUE_01 + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + "Element: nodeA" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "Attributes:" + System.lineSeparator()
-            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att01=att02 value" + System.lineSeparator()
+            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att01 = att02 value" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "Element content: "
             + XML_02_NODE_VALUE_02 + System.lineSeparator();
        public static final String SAMPLE_XML_03 = "<root>"
@@ -57,17 +57,17 @@ public class CustomTextViewTest {
             + "</root>";
     public static final String SAMPLE_XML_03_CUSTOM_VIEW = "Element: nodeA" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + "Attributes:" + System.lineSeparator()
-            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att01=att01 value" + System.lineSeparator()
+            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att01 = att01 value" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + "Element content: "
             + XML_02_NODE_VALUE_01 + System.lineSeparator()
             + "Element: nodeA" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + "Attributes:" + System.lineSeparator()
-            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att01=att02 value" + System.lineSeparator()
+            + CustomTextView.INDENT_CHARACTER + CustomTextView.INDENT_CHARACTER + "att01 = att02 value" + System.lineSeparator()
             + CustomTextView.INDENT_CHARACTER + "Element content: "
             + XML_02_NODE_VALUE_02 + System.lineSeparator(); 
     public static final String SAMPLE_XML_01_CUSTOM_VIEW_WITH_ROOT = "Root: root" + System.lineSeparator() 
             + "Attributes:" + System.lineSeparator()
-            + CustomTextView.INDENT_CHARACTER + "a=b" + System.lineSeparator()            
+            + CustomTextView.INDENT_CHARACTER + "a = b" + System.lineSeparator()            
             +  SAMPLE_XML_01_CUSTOM_VIEW;
    
     @Test

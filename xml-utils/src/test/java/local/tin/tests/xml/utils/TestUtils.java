@@ -39,7 +39,7 @@ public class TestUtils {
 
     public Document getDocumentFromString(String string, boolean namespaceAware) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        docFactory.setIgnoringElementContentWhitespace(namespaceAware);
+        docFactory.setNamespaceAware(namespaceAware);
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         docBuilder.isValidating();
         InputSource is = new InputSource();

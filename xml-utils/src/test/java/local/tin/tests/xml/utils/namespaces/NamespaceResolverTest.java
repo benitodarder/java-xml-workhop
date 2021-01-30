@@ -28,7 +28,7 @@ public class NamespaceResolverTest {
     public void setUp() {
         map = new HashMap<>();
         map.put(Common.ATTRIBUTE_XMLNS, XMLNS_URI_01);
-        map.put(Common.ATTRIBUTE_XMLNS + NamespaceResolver.NAMESPACE_SEPARATOR + XMLNS_02, XMLNS_URI_02);
+        map.put(Common.ATTRIBUTE_XMLNS + Common.NAMESPACE_PREFIX_SEPARATOR + XMLNS_02, XMLNS_URI_02);
         namespaceResolver = new NamespaceResolver(XMLNS_01, map);
     }
 
