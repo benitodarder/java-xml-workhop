@@ -28,6 +28,8 @@ public class NodesComparatorTest {
     private static final String NODE_WITH_ATTRIBUTES_C_A = "oneNodeWithAttributesCA.xml";
     private static final String NODE_WITH_ATTRIBUTES_A_C_CDATA = "oneNodeWithAttributesACWithCDATA.xml";
     private static final String NODE_WITH_ATTRIBUTES_C_A_CDATA = "oneNodeWithAttributesCAWithCDATA.xml";
+    private static final String IS_SAME_NODE_LIST_SHALLOWLY_A = "isSameNodeListShallowlly_A.xml";
+    private static final String IS_SAME_NODE_LIST_SHALLOWLY_B = "isSameNodeListShallowlly_B.xml";
     private Document documentA;
     private Document documentB;
     private Node nodeA;
@@ -221,7 +223,7 @@ public class NodesComparatorTest {
     @Test
     public void isSameNodeList_returns_true_for_same_node_list() {
 
-        boolean result = NodesComparator.getInstance().isSameNodeList(documentA.getFirstChild().getChildNodes(), documentA.getFirstChild().getChildNodes());
+        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(documentA.getFirstChild().getChildNodes(), documentA.getFirstChild().getChildNodes());
 
         assertThat(result, equalTo(true));
     }
@@ -229,7 +231,7 @@ public class NodesComparatorTest {
     @Test
     public void isSameNodeList_returns_true_for_equal_node_list() {
 
-        boolean result = NodesComparator.getInstance().isSameNodeList(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes());
+        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes());
 
         assertThat(result, equalTo(true));
     }
@@ -254,7 +256,7 @@ public class NodesComparatorTest {
         System.out.println("Document A: " + PrettyPrint.getInstance().getDocumentPrettyPrinted(documentA));
         System.out.println("Document B: " + PrettyPrint.getInstance().getDocumentPrettyPrinted(documentB));
 
-        boolean result = NodesComparator.getInstance().isSameNodeList(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes());
+        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes());
 
         assertThat(result, equalTo(false));
     }
@@ -277,7 +279,7 @@ public class NodesComparatorTest {
             }
         }
 
-        boolean result = NodesComparator.getInstance().isSameNodeList(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes());
+        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes());
 
         assertThat(result, equalTo(false));
     }
@@ -408,5 +410,42 @@ public class NodesComparatorTest {
 
         assertThat(result, equalTo(true));
         assertThat(resultCData, equalTo(false));
+    }
+
+    @Test
+    public void isSameNodeListShallowly_returns_true_and_isSameNodeListDeeply_returns_false() throws IOException, ParserConfigurationException, SAXException {
+        documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), IS_SAME_NODE_LIST_SHALLOWLY_A), true);
+        nodeA = null;
+        for (int i = 0; i < documentA.getFirstChild().getChildNodes().getLength(); i++) {
+            if (documentA.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
+                for (int j = 0; j < documentA.getFirstChild().getChildNodes().item(i).getChildNodes().getLength(); j++) {
+                    if (documentA.getFirstChild().getChildNodes().item(i).getChildNodes().item(j).getNodeType() == Node.ELEMENT_NODE) {
+                        nodeA = documentA.getFirstChild().getChildNodes().item(i).getChildNodes().item(j);
+                        break;
+                    }
+                }
+
+            }
+        }
+        documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), IS_SAME_NODE_LIST_SHALLOWLY_B), true);
+        nodeB = null;
+        for (int i = 0; i < documentB.getFirstChild().getChildNodes().getLength(); i++) {
+            if (documentB.getFirstChild().getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
+                for (int j = 0; j < documentB.getFirstChild().getChildNodes().item(i).getChildNodes().getLength(); j++) {
+                    if (documentB.getFirstChild().getChildNodes().item(i).getChildNodes().item(j).getNodeType() == Node.ELEMENT_NODE) {
+                        nodeB = documentB.getFirstChild().getChildNodes().item(i).getChildNodes().item(j);
+                        break;
+                    }
+                }
+
+            }
+        }
+
+
+        boolean resulShallowly = NodesComparator.getInstance().isSameNodeListShallowly(nodeA.getChildNodes(), nodeB.getChildNodes());        
+        boolean resultDeeply = NodesComparator.getInstance().isSameNodeListDeeply(nodeA.getChildNodes(), nodeB.getChildNodes());
+
+        assertThat(resulShallowly, equalTo(false));        
+        assertThat(resultDeeply, equalTo(false));
     }
 }

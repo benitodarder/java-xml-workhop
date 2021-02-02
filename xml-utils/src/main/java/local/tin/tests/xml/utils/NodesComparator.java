@@ -105,7 +105,7 @@ public class NodesComparator {
         if (!isSameNodeShallowly(nodeA, nodeB)) {
             return false;
         }
-        return isSameNodeList(nodeA.getChildNodes(), nodeB.getChildNodes());
+        return isSameNodeListDeeply(nodeA.getChildNodes(), nodeB.getChildNodes());
     }
 
     /**
@@ -116,7 +116,7 @@ public class NodesComparator {
      * @param nodeListB as NodeList
      * @return boolean
      */
-    public boolean isSameNodeList(NodeList nodeListA, NodeList nodeListB) {
+    public boolean isSameNodeListDeeply(NodeList nodeListA, NodeList nodeListB) {
         if (nodeListA.getLength() != nodeListB.getLength()) {
             return false;
         }
@@ -151,7 +151,7 @@ public class NodesComparator {
         if (!isSameNodeShallowly(documentA.getFirstChild(), documentB.getFirstChild())) {
             return false;
         }
-        return isSameNodeList(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes());
+        return isSameNodeListDeeply(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes());
     }
 
     private String getTextNodeContent(Node node) {
@@ -182,4 +182,35 @@ public class NodesComparator {
                 && attributeA.getNodeName().equals(attributeB.getNodeName())
                 && attributeA.getNodeValue().equals(attributeB.getNodeValue());
     }
+    
+    /**
+     * Returns true if both node lists contain the same number of nodesnodes, 
+     * and they match isSameNodeShawlloly
+     *
+     * @param nodeListA as NodeList
+     * @param nodeListB as NodeList
+     * @return boolean
+     */
+    public boolean isSameNodeListShallowly(NodeList nodeListA, NodeList nodeListB) {
+        if (nodeListA.getLength() != nodeListB.getLength()) {
+            return false;
+        }
+        int nodesChilds = nodeListA.getLength();
+        for (int i = 0; i < nodesChilds; i++) {
+            if (nodeListA.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                boolean found = false;
+                for (int j = 0; j < nodesChilds; j++) {
+                    if (nodeListB.item(j).getNodeType() == Node.ELEMENT_NODE
+                            && isSameNodeShallowly(nodeListA.item(i), nodeListB.item(j))) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }    
 }
