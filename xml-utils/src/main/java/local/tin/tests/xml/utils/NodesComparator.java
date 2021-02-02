@@ -49,6 +49,9 @@ public class NodesComparator {
      * @return boolean
      */
     public boolean isSameNodeShallowly(Node nodeA, Node nodeB) {
+        if (!nodeA.getLocalName().equals(nodeB.getLocalName())) {
+            return false;
+        }
         NamedNodeMap nodeAAttributes = nodeA.getAttributes();
         NamedNodeMap nodeBAttributes = nodeB.getAttributes();
         if (nodeAAttributes.getLength() != nodeBAttributes.getLength()) {
@@ -213,4 +216,5 @@ public class NodesComparator {
         }
         return true;
     }    
+      
 }
