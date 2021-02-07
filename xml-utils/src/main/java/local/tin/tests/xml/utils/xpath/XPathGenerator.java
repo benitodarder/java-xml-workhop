@@ -107,7 +107,7 @@ public class XPathGenerator {
     
     private String getNodeByLocalName(Node node) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(WILDCARD_ALL).append(SQUARE_BRACKET_OPEN).append(Common.LOCAL_NAME).append(Common.EQUAL_SIGN).append(SINGLE_QUOTE).append(getNodeNameWithoutNamespacePrefix(node)).append(SINGLE_QUOTE).append(SQUARE_BRACKET_CLOSE);
+        stringBuilder.append(WILDCARD_ALL).append(SQUARE_BRACKET_OPEN).append(Common.LOCAL_NAME).append(Common.EQUAL_SIGN).append(SINGLE_QUOTE).append(node.getLocalName()).append(SINGLE_QUOTE).append(SQUARE_BRACKET_CLOSE);
         return stringBuilder.toString();
     }
 

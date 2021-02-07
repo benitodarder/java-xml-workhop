@@ -1,0 +1,10 @@
+<root xmlns:a="http://a.b.com">
+    <a:nodeA>
+        <a:nodeAA a="b" c="c">
+            Node A value B
+        </a:nodeAA>
+        <a:nodeAA a="c" b="a">
+            Node A value C
+        </a:nodeAA>        
+    </a:nodeA>
+</root>

@@ -1,0 +1,71 @@
+<root xmlns:a="http://a.b.com">
+    <!-- isSameNodeShallowly -->
+    <a:nodeA>
+        <a:nodeAA a="b">
+            Node A value A
+        </a:nodeAA>
+        <a:nodeAA a="c">
+            Node A value B
+        </a:nodeAA>        
+    </a:nodeA>
+    <!-- isSameNodeDeeply -->
+    <!-- Equals -->
+    <a:nodeB>
+        <a:nodeAA a="b">
+            Node A value A
+        </a:nodeAA>
+        <a:nodeAA a="c">
+            Node A value B
+        </a:nodeAA>        
+    </a:nodeB>    
+    <!-- Different number -->
+    <a:nodeB>
+        <a:nodeAA a="b">
+            Node A value A
+        </a:nodeAA>
+        <a:nodeAA a="c">
+            Node A value B
+        </a:nodeAA> 
+         <a:nodeAA a="d">
+            Node A value C
+        </a:nodeAA>        
+    </a:nodeB>    
+    <!-- isSameNodeList equals -->    
+    <a:nodeC>
+        <a:nodeCA a="b">
+            Node A value A
+        </a:nodeCA>
+        <a:nodeCA a="c">
+            Node A value B
+        </a:nodeCA>
+    </a:nodeC>  
+    <!-- isSameNodeList different number of nodes  -->    
+    <a:nodeD>
+        <a:nodeDA a="b">
+            Node A value A
+        </a:nodeDA>
+        <a:nodeDA a="c">
+            Node A value B
+        </a:nodeDA>
+        <a:nodeDA a="d">
+            Node A value C
+        </a:nodeDA>
+    </a:nodeD>  
+    <!-- isSameNodeList different content -->    
+    <a:nodeE>
+        <a:nodeEA a="b">
+            Node A value A
+        </a:nodeEA>
+        <a:nodeEA a="c">
+            Node A value B
+        </a:nodeEA>
+    </a:nodeE>  
+    <!-- isSameNodeShallowly ignores namespace attributes -->  
+    <a:nodeF a="b" xmlns:c="http://c.d.com">
+        Node A value B
+    </a:nodeF> 
+    <!-- isSameNodeShallowly ignores attributes order -->  
+    <a:nodeG a="b" c="c">
+        Node A value B
+    </a:nodeG>                
+</root>

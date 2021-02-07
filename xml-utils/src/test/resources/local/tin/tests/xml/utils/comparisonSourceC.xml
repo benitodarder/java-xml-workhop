@@ -1,0 +1,11 @@
+<root xmlns:a="http://a.b.com">
+    <!-- isSameDocument -->
+    <a:nodeA>
+        <a:nodeAA a="b">
+            Node A value A
+        </a:nodeAA>
+        <a:nodeAA a="c">
+            Node A value B
+        </a:nodeAA>        
+    </a:nodeA>          
+</root>

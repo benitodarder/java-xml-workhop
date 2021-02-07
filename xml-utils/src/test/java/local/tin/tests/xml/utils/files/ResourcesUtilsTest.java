@@ -15,7 +15,7 @@ public class ResourcesUtilsTest {
         
         String result = ResourcesUtils.getInstance().getFileAsString(FileUtilsTest.class, "sample.properties");
         
-        assertThat(result, equalTo("prop1=prop1" + System.lineSeparator() + "prop2=2"));
+        assertThat(result.trim(), equalTo("prop1=prop1" + System.lineSeparator() + "prop2=2"));
     }      
     
 }
