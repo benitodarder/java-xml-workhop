@@ -1,5 +1,7 @@
-package local.tin.tests.xml.utils;
+package local.tin.tests.xml.utils.comparison;
 
+import local.tin.tests.xml.utils.comparison.ComparisonExclusion;
+import local.tin.tests.xml.utils.comparison.ComparisonExclusions;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Before;

@@ -67,5 +67,59 @@
     <!-- isSameNodeShallowly ignores attributes order -->  
     <a:nodeG a="b" c="c">
         Node A value B
-    </a:nodeG>                
+    </a:nodeG>    
+    <!-- isSameNodeShallowly and isSameNodeDeeply ignores skipable white spaces -->  
+    <a:nodeH>
+        
+        <a:nodeHA a="b">
+            Node A value A
+        </a:nodeHA>      
+    </a:nodeH>        
+    <!-- isSameNodeShallowly checks non ignorable white spaces -->  
+    <a:nodeI>
+        <a:nodeIA a="b">
+                 <![CDATA[
+                 
+      Node A value B
+      
+   ]]>
+        </a:nodeIA>          
+    </a:nodeI>  
+    <!-- isSameNodeListShallowly true and   isSameNodeListDeeply false -->
+    <a:nodeJ xmlns="http://c.d.com">
+        <a:nodeJA a="b">
+            <nodeJAA>
+                Node A value B
+            </nodeJAA>
+        </a:nodeJA>
+        <a:nodeJA a="c">
+            <nodeJAA>
+                Node A value C
+            </nodeJAA>            
+        </a:nodeJA>
+    </a:nodeJ>              
+    <!-- isSameNodeList different number of nodes for exclusions -->    
+    <a:nodeK>
+        <a:nodeKA a="b">
+            Node A value A
+        </a:nodeKA>
+        <a:nodeKA a="c">
+            Node A value B
+        </a:nodeKA>
+        <a:nodeKA a="d">
+            Node A value C
+        </a:nodeKA>
+        <a:nodeKB a="b">
+            Node B value A
+        </a:nodeKB>        
+    </a:nodeK>  
+    <!-- isSameNodeShallowly different attributes with attributes exclusions -->  
+    <a:nodeL>
+        <a:nodeLA a="b" b="a">
+            Node A value B
+        </a:nodeLA>
+        <a:nodeLA a="c" b="a">
+            Node A value C
+        </a:nodeLA>        
+    </a:nodeL>    
 </root>

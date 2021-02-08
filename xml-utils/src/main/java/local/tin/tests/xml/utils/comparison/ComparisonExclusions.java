@@ -1,4 +1,4 @@
-package local.tin.tests.xml.utils;
+package local.tin.tests.xml.utils.comparison;
 
 import java.util.HashMap;
 import java.util.HashSet;

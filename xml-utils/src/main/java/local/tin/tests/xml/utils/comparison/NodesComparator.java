@@ -1,5 +1,6 @@
-package local.tin.tests.xml.utils;
+package local.tin.tests.xml.utils.comparison;
 
+import local.tin.tests.xml.utils.Common;
 import org.apache.log4j.Logger;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -65,12 +66,17 @@ public class NodesComparator {
         } else {
             int attributesLenght = nodeAAttributes.getLength();
             for (int i = 0; i < attributesLenght; i++) {
-                if (isNonNameSpaceAttribute(nodeAAttributes.item(i)) && !isAttributeExcluded(attributes, nodeAAttributes.item(i).getNodeName(), nodeA.getLocalName())) {
+                if (isNonNameSpaceAttribute(nodeAAttributes.item(i))) {
                     boolean found = false;
                     for (int j = 0; j < attributesLenght; j++) {
-                        if (isSameNonNameSpaceAttribute(nodeAAttributes.item(i), nodeBAttributes.item(j)) && !isAttributeExcluded(attributes, nodeBAttributes.item(j).getNodeName(), nodeB.getLocalName())) {
+                        if (isSameNonNamespaceAttribute(nodeAAttributes.item(i), nodeBAttributes.item(j))) {
                             found = true;
                             break;
+                        } else if (isSameNonNamespaceAttributeName(nodeAAttributes.item(i), nodeBAttributes.item(j))
+                                 && isAttributeExcluded(attributes, nodeAAttributes.item(i).getNodeName(), nodeA.getLocalName())
+                                 && isAttributeExcluded(attributes, nodeBAttributes.item(j).getNodeName(), nodeB.getLocalName())) {
+                            found = true;
+                            break;                            
                         }
                     }
                     if (!found) {
@@ -134,14 +140,15 @@ public class NodesComparator {
      * @return boolean
      */
     public boolean isSameNodeListDeeply(NodeList nodeListA, NodeList nodeListB, ComparisonExclusions nodes, ComparisonExclusions attributes) {
-        if (nodeListA.getLength() != nodeListB.getLength()) {
+        if (nodeListA.getLength() != nodeListB.getLength() && nodes == null && attributes == null) {
             return false;
         }
-        int nodesChilds = nodeListA.getLength();
-        for (int i = 0; i < nodesChilds; i++) {
+        int nodesAChilds = nodeListA.getLength();
+        int nodesBChilds = nodeListB.getLength();
+        for (int i = 0; i < nodesAChilds; i++) {
             if (nodeListA.item(i).getNodeType() == Node.ELEMENT_NODE && !isNodeExcluded(nodes, nodeListA.item(i))) {
                 boolean found = false;
-                for (int j = 0; j < nodesChilds; j++) {
+                for (int j = 0; j < nodesBChilds; j++) {
                     if (nodeListB.item(j).getNodeType() == Node.ELEMENT_NODE
                             && isSameNodeDeeply(nodeListA.item(i), nodeListB.item(j), nodes, attributes)) {
                         found = true;
@@ -165,13 +172,15 @@ public class NodesComparator {
      *
      * @param documentA as org.w3c.Document
      * @param documentB as org.w3c.Document
+     * @param nodes as ComparisonExclusions
+     * @param attributes as ComparisonExclusions
      * @return boolean
      */
-    public boolean isSameDocument(Document documentA, Document documentB) {
-        if (!isSameNodeShallowly(documentA.getFirstChild(), documentB.getFirstChild(), null, null)) {
+    public boolean isSameDocument(Document documentA, Document documentB, ComparisonExclusions nodes, ComparisonExclusions attributes) {
+        if (!isSameNodeShallowly(documentA.getFirstChild(), documentB.getFirstChild(), nodes, attributes)) {
             return false;
         }
-        return isSameNodeListDeeply(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes(), null, null);
+        return isSameNodeListDeeply(documentA.getFirstChild().getChildNodes(), documentB.getFirstChild().getChildNodes(), nodes, attributes);
     }
 
     private String getTextNodeContent(Node node) {
@@ -196,11 +205,15 @@ public class NodesComparator {
         return textContent;
     }
 
-    private boolean isSameNonNameSpaceAttribute(Node attributeA, Node attributeB) throws DOMException {
+    private boolean isSameNonNamespaceAttribute(Node attributeA, Node attributeB) throws DOMException {
+        return isSameNonNamespaceAttributeName(attributeB, attributeA)
+                && attributeA.getNodeValue().equals(attributeB.getNodeValue());
+    }
+
+    public boolean isSameNonNamespaceAttributeName(Node attributeB, Node attributeA) {
         return attributeB.getNodeType() == Node.ATTRIBUTE_NODE
                 && !attributeB.getNodeName().startsWith(Common.ATTRIBUTE_XMLNS)
-                && attributeA.getNodeName().equals(attributeB.getNodeName())
-                && attributeA.getNodeValue().equals(attributeB.getNodeValue());
+                && attributeA.getNodeName().equals(attributeB.getNodeName());
     }
     
     /**
@@ -209,9 +222,11 @@ public class NodesComparator {
      *
      * @param nodeListA as NodeList
      * @param nodeListB as NodeList
+          * @param nodes as ComparisonExclusions
+     * @param attributes as ComparisonExclusions* 
      * @return boolean
      */
-    public boolean isSameNodeListShallowly(NodeList nodeListA, NodeList nodeListB) {
+    public boolean isSameNodeListShallowly(NodeList nodeListA, NodeList nodeListB, ComparisonExclusions nodes, ComparisonExclusions attributes) {
         if (nodeListA.getLength() != nodeListB.getLength()) {
             return false;
         }
@@ -221,7 +236,7 @@ public class NodesComparator {
                 boolean found = false;
                 for (int j = 0; j < nodesChilds; j++) {
                     if (nodeListB.item(j).getNodeType() == Node.ELEMENT_NODE
-                            && isSameNodeShallowly(nodeListA.item(i), nodeListB.item(j), null, null)) {
+                            && isSameNodeShallowly(nodeListA.item(i), nodeListB.item(j), nodes, attributes)) {
                         found = true;
                         break;
                     }

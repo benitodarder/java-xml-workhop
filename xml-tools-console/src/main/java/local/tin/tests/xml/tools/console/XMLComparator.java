@@ -5,7 +5,7 @@ import java.util.Set;
 import static local.tin.tests.xml.tools.console.XPathGenerator.MAX_ARGUMENTS;
 import static local.tin.tests.xml.tools.console.XPathGenerator.MIN_ARGUMENTS;
 import local.tin.tests.xml.utils.Builder;
-import local.tin.tests.xml.utils.NodesComparator;
+import local.tin.tests.xml.utils.comparison.NodesComparator;
 import local.tin.tests.xml.utils.errors.XMLUtilsException;
 import local.tin.tests.xml.utils.xpath.XPathDetails;
 import local.tin.tests.xml.utils.xpath.XPathGenerator;
@@ -38,7 +38,7 @@ public class XMLComparator {
             }
             Document documentA = Builder.getInstance().getDocumentFromFile(fileA, true);
             Document documentB = Builder.getInstance().getDocumentFromFile(fileB, true);
-            if (NodesComparator.getInstance().isSameDocument(documentA, documentB)) {
+            if (NodesComparator.getInstance().isSameDocument(documentA, documentB, null, null)) {
                 LOGGER.info(fileA + " and " + fileB + " contain same data");
             } else {
                 LOGGER.info(fileA + " and " + fileB + " do not contain the same data, generating not matching XPath expressions.");
@@ -60,11 +60,11 @@ public class XMLComparator {
                     NodeList nodeListB = local.tin.tests.xml.utils.xpath.XPathTester.getInstance().getResult(xpathDetailsB);
                     LOGGER.debug("XPath: " + xpath + "\nNodes in A: " + nodeListA.getLength() + "; nods in B: " + nodeListB.getLength());
                     if (allPath) {
-                        if (!NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB)) {
+                        if (!NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, null, null)) {
                             unmatchedAXPathsInB.add(xpath);
                         }
                     } else {
-                        if (!NodesComparator.getInstance().isSameNodeListShallowly(nodeListA, nodeListB)) {
+                        if (!NodesComparator.getInstance().isSameNodeListShallowly(nodeListA, nodeListB, null, null)) {
                             unmatchedAXPathsInB.add(xpath);
                         }
                     }
@@ -83,11 +83,11 @@ public class XMLComparator {
                     NodeList nodeListB = local.tin.tests.xml.utils.xpath.XPathTester.getInstance().getResult(xpathDetailsB);
                     LOGGER.debug("XPath: " + xpath + "\nNodes in A: " + nodeListA.getLength() + "; nods in B: " + nodeListB.getLength());
                     if (allPath) {
-                        if (!NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB)) {
+                        if (!NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, null, null)) {
                             unmatchedBXpathsInA.add(xpath);
                         }
                     } else {
-                        if (!NodesComparator.getInstance().isSameNodeListShallowly(nodeListA, nodeListB)) {
+                        if (!NodesComparator.getInstance().isSameNodeListShallowly(nodeListA, nodeListB, null, null)) {
                             unmatchedBXpathsInA.add(xpath);
                         }
                     }

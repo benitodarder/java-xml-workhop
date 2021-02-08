@@ -1,0 +1,11 @@
+<root xmlns:c="http://a.b.com">
+    <!-- isSameDocment true due to exclusion-->
+    <c:nodeA>
+        <c:nodeAA a="c">
+            Node A value B
+        </c:nodeAA>           
+        <c:nodeAA a="x">
+            Node A value A
+        </c:nodeAA>     
+    </c:nodeA>          
+</root>
