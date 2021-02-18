@@ -2,6 +2,7 @@ package local.tin.tests.xml.utils.files;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -66,4 +67,13 @@ public class FileUtilsTest {
         String savedFile = FileUtils.getInstance().getFileAsString(filePath);
         assertThat(savedFile, equalTo(content));
     }
+    
+    @Test
+    public void getFileAsStringList_returns_the_file_content_as_string_list() throws Exception {
+        
+        List<String> result = FileUtils.getInstance().getFileAsStringList(FileUtilsTest.class.getResource("sample.properties").getPath());
+        
+        assertThat(result.get(0), equalTo("prop1=prop1"));
+        assertThat(result.get(1), equalTo("prop2=2"));
+    }    
 }

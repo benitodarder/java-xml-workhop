@@ -1,7 +1,0 @@
-<root xmlns="http://a.b.com">
-    <nodeAA a="b" c="d"><![CDATA[
-        
-        Node A value B
-        
-    ]]></nodeAA>
-</root>

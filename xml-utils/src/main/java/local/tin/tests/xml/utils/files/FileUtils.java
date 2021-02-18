@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -97,4 +99,22 @@ public class FileUtils {
         }
 
     }
+    
+    /**
+     * Returns a String List containing the content of the file.
+     *
+     * @param filePath String
+     * @return List of String
+     * @throws java.io.IOException
+     */
+    public List<String> getFileAsStringList(String filePath) throws IOException {
+        ArrayList<String> result = new ArrayList<>();
+        BufferedReader bufferedReader = getBufferedReader(filePath);
+        String string = bufferedReader.readLine();
+        while (string != null) {
+            result.add(string);
+            string = bufferedReader.readLine();
+        }
+        return result;
+    }    
 }

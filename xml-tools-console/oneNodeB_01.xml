@@ -1,5 +1,0 @@
-<root xmlns:b="http://a.b.com">
-    <b:nodeAA a="b" c="d">
-        Node A Value B
-    </b:nodeAA>
-</root>
