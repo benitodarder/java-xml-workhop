@@ -74,8 +74,8 @@ public class XMLComparator {
                 LOGGER.info(fileA + " and " + fileB + " contain same data");
             } else {
                 LOGGER.info(fileA + " and " + fileB + " do not contain the same data, generating not matching XPath expressions.");
-                Set<String> xpathsA = XPathGenerator.getInstance().getDocumentXPaths(documentA, true);
-                Set<String> xpathsB = XPathGenerator.getInstance().getDocumentXPaths(documentB, true);
+                Set<String> xpathsA = XPathGenerator.getInstance().getDocumentXPaths(documentA, true, excludedAttributes);
+                Set<String> xpathsB = XPathGenerator.getInstance().getDocumentXPaths(documentB, true, excludedAttributes);
                 Set<String> unmatchedAXPathsInB = new HashSet<>();
                 Set<String> unmatchedBXpathsInA = new HashSet<>();
                 LOGGER.debug("Matching XPaths from: " + fileA + " in " + fileB);

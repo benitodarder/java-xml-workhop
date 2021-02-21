@@ -26,7 +26,7 @@ public class XPathGenerator {
             String filePath = Common.getInstance().getArgument("-file", args);
             boolean useLocalName = Boolean.parseBoolean(Common.getInstance().getArgument("-useLocalName", args));
             Document document = Builder.getInstance().getDocumentFromFile(filePath, true);
-            Set<String> xpaths = local.tin.tests.xml.utils.xpath.XPathGenerator.getInstance().getDocumentXPaths(document, useLocalName);
+            Set<String> xpaths = local.tin.tests.xml.utils.xpath.XPathGenerator.getInstance().getDocumentXPaths(document, useLocalName,  null);
             xpaths.forEach((string) -> {
                 LOGGER.info(string);
             });

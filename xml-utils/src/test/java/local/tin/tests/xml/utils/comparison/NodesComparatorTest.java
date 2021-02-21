@@ -51,33 +51,9 @@ public class NodesComparatorTest {
     }
 
 
-    private ComparisonExclusions getNodeExclusions(Node node) {
-        ComparisonExclusions nodeExclusions = new ComparisonExclusions();
-        ComparisonExclusion exclusion = new ComparisonExclusion();
-        exclusion.setNodeLocalName(node.getLocalName());
-        exclusion.setParentLocalName(node.getParentNode().getLocalName());
-        nodeExclusions.put(exclusion.getNodeLocalName(), exclusion);
-        return nodeExclusions;
-    }
-
-
-    private ComparisonExclusions getAttributeExclusions(Node node, String attributeName) {
-        ComparisonExclusions attrbutesExclusions = new ComparisonExclusions();
-        ComparisonExclusion exclusion = new ComparisonExclusion();
-        exclusion.setAttributeName(attributeName);
-        exclusion.setNodeLocalName(node.getLocalName());
-        exclusion.setParentLocalName(node.getParentNode().getLocalName());
-        attrbutesExclusions.put(exclusion.getAttributeName(), exclusion);
-        return attrbutesExclusions;
-    }
-
-    private Node getNodeByXPath(String xPathString, Document document, int i) throws XPathExpressionException {
-        return getNodeListByXPath(xPathString, document).item(i);
-    }
-
     @Test
     public void isSameNodeShallowly_returns_true_when_same_node_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeA, null, null);
 
@@ -86,8 +62,8 @@ public class NodesComparatorTest {
 
     @Test
     public void isSameNodeShallowly_returns_true_when_equal_node_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 0);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 0);
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, null);
 
@@ -96,8 +72,8 @@ public class NodesComparatorTest {
 
     @Test
     public void isSameNodeShallowly_returns_false_when_nodes_have_different_attributes_and_same_text_content_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 1);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 1);
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, null);
 
@@ -106,8 +82,8 @@ public class NodesComparatorTest {
 
     @Test
     public void isSameNodeShallowly_returns_false_when_text_nodes_have_same_attributes_and_different_text_content_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 1);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 1);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 1);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 1);
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, null);
 
@@ -116,7 +92,7 @@ public class NodesComparatorTest {
 
     @Test
     public void isSameNodeDeeply_returns_true_for_same_node_exclusionless() throws IOException, ParserConfigurationException, XPathExpressionException, SAXException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 0);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 0);
 
         boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeA, null, null);
 
@@ -125,8 +101,8 @@ public class NodesComparatorTest {
 
     @Test
     public void isSameNodeDeeply_returns_true_for_equal_nodes_exclusionless() throws IOException, ParserConfigurationException, XPathExpressionException, SAXException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 0);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 0);
 
         boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeB, null, null);
 
@@ -135,8 +111,8 @@ public class NodesComparatorTest {
 
     @Test
     public void isSameNodeDeeply_returns_false_when_number_of_childs_differs_exclusionless() throws IOException, XPathExpressionException, ParserConfigurationException, SAXException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 1);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 0);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 1);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 0);
 
         boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeB, null, null);
 
@@ -145,24 +121,18 @@ public class NodesComparatorTest {
 
     @Test
     public void isSameNodeDeeply_returns_false_when_one_child_does_not_match_exclsionless() throws XPathExpressionException, IOException, ParserConfigurationException, SAXException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 1);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 1);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 1);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 1);
 
         boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeB, null, null);
 
         assertThat(result, equalTo(false));
     }
 
-    private NodeList getNodeListByXPath(String xPathString, Document document) throws XPathExpressionException {
-        XPathFactory xFactory = XPathFactory.newInstance();
-        XPath xPath = xFactory.newXPath();
-        XPathExpression xExpression = xPath.compile(xPathString);
-        return ((NodeList) xExpression.evaluate(document, XPathConstants.NODESET));
-    }
-    
+
     @Test
     public void isSameNodeList_returns_true_for_same_node_list_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {    
-        nodeListA = getNodeListByXPath("//*[local-name() = 'nodeC']", documentA);
+        nodeListA = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeC']", documentA);
         
         boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListA, null, null);
 
@@ -171,8 +141,8 @@ public class NodesComparatorTest {
     
     @Test
     public void isSameNodeList_returns_true_for_equal_node_list_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {     
-        nodeListA = getNodeListByXPath("//*[local-name() = 'nodeC']", documentA);     
-        nodeListB = getNodeListByXPath("//*[local-name() = 'nodeC']", documentB);        
+        nodeListA = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeC']", documentA);     
+        nodeListB = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeC']", documentB);        
         
         boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, null, null);
 
@@ -181,8 +151,8 @@ public class NodesComparatorTest {
     
     @Test
     public void isSameNodeList_returns_false_for_node_list_with_different_number_of_elements_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {     
-        nodeListA = getNodeListByXPath("//*[local-name() = 'nodeD']", documentA);
-        nodeListB = getNodeListByXPath("//*[local-name() = 'nodeD']", documentB);        
+        nodeListA = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeD']", documentA);
+        nodeListB = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeD']", documentB);        
         
         boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, null, null);
 
@@ -191,8 +161,8 @@ public class NodesComparatorTest {
     
     @Test
     public void isSameNodeList_returns_false_for_node_list_with_different_content_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {    
-        nodeListA = getNodeListByXPath("//*[local-name() = 'nodeE']", documentA);
-        nodeListB = getNodeListByXPath("//*[local-name() = 'nodeE']", documentB);        
+        nodeListA = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeE']", documentA);
+        nodeListB = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeE']", documentB);        
         
         boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, null, null);
 
@@ -219,8 +189,8 @@ public class NodesComparatorTest {
     
         @Test
     public void isSameNodeShallowly_ignores_namespace_attributes_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeF']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeF']", documentB, 0);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeF']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeF']", documentB, 0);
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, null);
 
@@ -229,8 +199,8 @@ public class NodesComparatorTest {
     
         @Test
     public void isSameNodeShallowly_ignores_attributes_order_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeG']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeG']", documentB, 0);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeG']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeG']", documentB, 0);
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, null);
 
@@ -249,8 +219,8 @@ public class NodesComparatorTest {
     
     @Test
     public void isSameNodeShallowly_ignores_whitespaces_when_not_in_cdata_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeH']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeH']", documentB, 0);        
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeH']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeH']", documentB, 0);        
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, null);
 
@@ -259,8 +229,8 @@ public class NodesComparatorTest {
     
     @Test
     public void isSameNodeDeeply_ignores_whitespaces_when_not_in_cdata_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeH']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeH']", documentB, 0);        
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeH']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeH']", documentB, 0);        
 
         boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeB, null, null);
 
@@ -269,8 +239,8 @@ public class NodesComparatorTest {
     
     @Test
     public void isSameNodeShallowly_returns_true_for_whitespaces_when_in_cdata_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeIA']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeIA']", documentB, 0);        
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeIA']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeIA']", documentB, 0);        
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, null);
 
@@ -279,8 +249,8 @@ public class NodesComparatorTest {
     
     @Test
     public void isSameNodeShallowly_returns_false_for_whitespaces_when_in_cdata_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeIA']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeIA']", documentB, 1);        
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeIA']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeIA']", documentB, 1);        
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, null);
 
@@ -289,8 +259,8 @@ public class NodesComparatorTest {
     
     @Test
     public void isSameNodeListShallowly_returns_true_and_isSameNodeListDeeply_returns_false_exclusionless() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeJ']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeJ']", documentB, 0);   
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeJ']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeJ']", documentB, 0);   
 
         boolean resulShallowly = NodesComparator.getInstance().isSameNodeListShallowly(nodeA.getChildNodes(), nodeB.getChildNodes(), null, null);
         boolean resultDeeply = NodesComparator.getInstance().isSameNodeListDeeply(nodeA.getChildNodes(), nodeB.getChildNodes(), null, null);
@@ -301,9 +271,9 @@ public class NodesComparatorTest {
 
     @Test
     public void isSameNodeShallowly_returns_true_when_matching_nodes_and_is_excluded_by_node_with_node_exclusion() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 0);
-        ComparisonExclusions nodeExclusions = getNodeExclusions(nodeA);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 0);
+        ComparisonExclusions nodeExclusions = TestUtils.getInstance().getNodeExclusions(nodeA);
   
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, nodeExclusions, null);
@@ -313,9 +283,9 @@ public class NodesComparatorTest {
     
     @Test
     public void isSameNodeShallowly_returns_true_when_no_matching_nodes_and_is_excluded_by_node_with_node_exclusion() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 1);
-        ComparisonExclusions nodeExclusions = getNodeExclusions(nodeA);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 1);
+        ComparisonExclusions nodeExclusions = TestUtils.getInstance().getNodeExclusions(nodeA);
   
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, nodeExclusions, null);
@@ -325,18 +295,18 @@ public class NodesComparatorTest {
     
     @Test
     public void isSameNodeShallowly_returns_true_when_matching_nodes_and_is_excluded_by_attribute_with_attribute_exclusion() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 0);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 0);
         
-        boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, getAttributeExclusions(nodeA, "a"));
+        boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, TestUtils.getInstance().getAttributeExclusions(nodeA, "a"));
 
         assertThat(result, equalTo(true));
     }    
     
     @Test
     public void isSameNodeShallowly_returns_true_when_no_matching_nodes_and_is_excluded_by_attribute_with_attribute_exclusions() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 0);        
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentB, 0);        
         NamedNodeMap nodeAAttributes = nodeA.getAttributes();
         int attributesLEnght = nodeAAttributes.getLength();
         for (int i = 0; i < attributesLEnght; i++) {
@@ -348,91 +318,91 @@ public class NodesComparatorTest {
 
         }
 
-        boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, getAttributeExclusions(nodeA, "a"));
+        boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, TestUtils.getInstance().getAttributeExclusions(nodeA, "a"));
 
         assertThat(result, equalTo(true));
     }    
     
     @Test
     public void isSameNodeDeeply_returns_true_for_equal_nodes_with_node_exclusion() throws IOException, ParserConfigurationException, XPathExpressionException, SAXException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 0);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 0);
 
-        boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeB, getNodeExclusions(nodeA), null);
+        boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeB, TestUtils.getInstance().getNodeExclusions(nodeA), null);
 
         assertThat(result, equalTo(true));
     }    
     
     @Test
     public void isSameNodeDeeply_returns_true_when_number_of_childs_differs_with_node_excluion() throws IOException, XPathExpressionException, ParserConfigurationException, SAXException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 1);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 0);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 1);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 0);
 
-        boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeB, getNodeExclusions(nodeA), null);
+        boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeB, TestUtils.getInstance().getNodeExclusions(nodeA), null);
 
         assertThat(result, equalTo(true));
     }    
     
     @Test
     public void isSameNodeDeeply_returns_true_when_one_child_does_not_match_with_node_exclsion() throws XPathExpressionException, IOException, ParserConfigurationException, SAXException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 1);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 1);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentA, 1);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeB']", documentB, 1);
 
-        boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeB, getNodeExclusions(nodeA), null);
+        boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeB, TestUtils.getInstance().getNodeExclusions(nodeA), null);
 
         assertThat(result, equalTo(true));
     }    
     
     @Test
     public void isSameNodeList_returns_true_for_equal_node_list_with_node_exclusion() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {    
-        nodeListA = getNodeListByXPath("//*[local-name() = 'nodeC']", documentA);
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeCA']", documentA, 0);     
-        nodeListB = getNodeListByXPath("//*[local-name() = 'nodeC']", documentB);        
+        nodeListA = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeC']", documentA);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeCA']", documentA, 0);     
+        nodeListB = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeC']", documentB);        
         
         
-        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, getNodeExclusions(nodeA), null);
+        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, TestUtils.getInstance().getNodeExclusions(nodeA), null);
 
         assertThat(result, equalTo(true));
     }      
     
     @Test
     public void isSameNodeList_returns_true_for_node_list_with_different_number_of_elements_with_node_exclusion() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {     
-        nodeListA = getNodeListByXPath("//*[local-name() = 'nodeD']", documentA);
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeDA']", documentA, 0);  
-        nodeListB = getNodeListByXPath("//*[local-name() = 'nodeD']", documentB);        
+        nodeListA = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeD']", documentA);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeDA']", documentA, 0);  
+        nodeListB = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeD']", documentB);        
         
-        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, getNodeExclusions(nodeA), null);
+        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, TestUtils.getInstance().getNodeExclusions(nodeA), null);
 
         assertThat(result, equalTo(true));
     }       
     
     @Test
     public void isSameNodeList_returns_true_for_node_list_with_different_number_of_elements_with_node_exclusion_and_one_alternate_node_not_excluded() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {  
-        nodeListA = getNodeListByXPath("//*[local-name() = 'nodeKA']", documentA);
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeKA']", documentA, 0); 
-        nodeListB = getNodeListByXPath("//*[local-name() = 'nodeKA']", documentB);        
+        nodeListA = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeKA']", documentA);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeKA']", documentA, 0); 
+        nodeListB = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeKA']", documentB);        
         
-        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, getNodeExclusions(nodeA), null);
+        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, TestUtils.getInstance().getNodeExclusions(nodeA), null);
 
         assertThat(result, equalTo(true));
     }       
     
     @Test
     public void isSameNodeList_returns_false_for_node_list_with_different_number_of_elements_with_node_exclusion_and_one_alternate_node_excluded() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {  
-        nodeListA = getNodeListByXPath("//*[local-name() = 'nodeKA']", documentA);
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeKB']", documentA, 0);  
-        nodeListB = getNodeListByXPath("//*[local-name() = 'nodeKA']", documentB);        
+        nodeListA = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeKA']", documentA);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeKB']", documentA, 0);  
+        nodeListB = TestUtils.getInstance().getNodeListByXPath("//*[local-name() = 'nodeKA']", documentB);        
         
-        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, getNodeExclusions(nodeA), null);
+        boolean result = NodesComparator.getInstance().isSameNodeListDeeply(nodeListA, nodeListB, TestUtils.getInstance().getNodeExclusions(nodeA), null);
 
         assertThat(result, equalTo(false));
     }     
     
     @Test
     public void isSameNodeShallowly_returns_true_when_no_matching_nodes_names_and_is_excluded_by_node_with_node_exclusion() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeCA']", documentB, 0);
-        ComparisonExclusions nodeExclusions = getNodeExclusions(nodeA);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeCA']", documentB, 0);
+        ComparisonExclusions nodeExclusions = TestUtils.getInstance().getNodeExclusions(nodeA);
   
 
         boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, nodeExclusions, null);
@@ -442,19 +412,19 @@ public class NodesComparatorTest {
     
     @Test
     public void isSameNodeShallowly_returns_false_when_one_excluded_attribute_is_missing_and_there_is_one_extra_attribute_with_attribute_exclusions() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeLA']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeLA']", documentB, 0);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeLA']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeLA']", documentB, 0);
 
-        boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, getAttributeExclusions(nodeA, "b"));
+        boolean result = NodesComparator.getInstance().isSameNodeShallowly(nodeA, nodeB, null, TestUtils.getInstance().getAttributeExclusions(nodeA, "b"));
 
         assertThat(result, equalTo(false));
     }    
     
     @Test
     public void isSameNodeDeeply_returns_true_when_no_matching_nodes_names_and_is_excluded_by_node_with_node_exclusion() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
-        nodeB = getNodeByXPath("//*[local-name() = 'nodeCA']", documentB, 0);
-        ComparisonExclusions nodeExclusions = getNodeExclusions(nodeA);
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);
+        nodeB = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeCA']", documentB, 0);
+        ComparisonExclusions nodeExclusions = TestUtils.getInstance().getNodeExclusions(nodeA);
   
 
         boolean result = NodesComparator.getInstance().isSameNodeDeeply(nodeA, nodeB, nodeExclusions, null);
@@ -466,9 +436,9 @@ public class NodesComparatorTest {
     public void isSameDocument_return_false_for_different_document_with_attribute_exclusion() throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
         documentA = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), COMPARISON_SOURCE_F), true);        
         documentB = TestUtils.getInstance().getDocumentFromString(TestUtils.getInstance().getFileAsString(getClass(), COMPARISON_SOURCE_G), true);        
-        nodeA = getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);        
+        nodeA = TestUtils.getInstance().getNodeByXPath("//*[local-name() = 'nodeAA']", documentA, 0);        
         
-        boolean result = NodesComparator.getInstance().isSameDocument(documentA, documentB, null, getAttributeExclusions(nodeA, "a"));
+        boolean result = NodesComparator.getInstance().isSameDocument(documentA, documentB, null, TestUtils.getInstance().getAttributeExclusions(nodeA, "a"));
 
         assertThat(result, equalTo(true));
     }       

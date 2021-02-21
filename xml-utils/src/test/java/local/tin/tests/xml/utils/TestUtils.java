@@ -7,7 +7,16 @@ import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import local.tin.tests.xml.utils.comparison.ComparisonExclusion;
+import local.tin.tests.xml.utils.comparison.ComparisonExclusions;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -70,4 +79,39 @@ public class TestUtils {
         }
         return stringBuilder.toString();
     }       
+    
+    public ComparisonExclusions getAttributeExclusions(Node node, String attributeName) {
+        ComparisonExclusions attrbutesExclusions = new ComparisonExclusions();
+        ComparisonExclusion exclusion = new ComparisonExclusion();
+        exclusion.setAttributeName(attributeName);
+        exclusion.setNodeLocalName(node.getLocalName());
+        exclusion.setParentLocalName(node.getParentNode().getLocalName());
+        attrbutesExclusions.put(exclusion.getAttributeName(), exclusion);
+        return attrbutesExclusions;
+    }  
+    
+  
+
+    public ComparisonExclusions getNodeExclusions(Node node) {
+        ComparisonExclusions nodeExclusions = new ComparisonExclusions();
+        ComparisonExclusion exclusion = new ComparisonExclusion();
+        exclusion.setNodeLocalName(node.getLocalName());
+        exclusion.setParentLocalName(node.getParentNode().getLocalName());
+        nodeExclusions.put(exclusion.getNodeLocalName(), exclusion);
+        return nodeExclusions;
+    }
+
+
+    public Node getNodeByXPath(String xPathString, Document document, int i) throws XPathExpressionException {
+        return getNodeListByXPath(xPathString, document).item(i);
+    }
+ 
+    
+    public NodeList getNodeListByXPath(String xPathString, Document document) throws XPathExpressionException {
+        XPathFactory xFactory = XPathFactory.newInstance();
+        XPath xPath = xFactory.newXPath();
+        XPathExpression xExpression = xPath.compile(xPathString);
+        return ((NodeList) xExpression.evaluate(document, XPathConstants.NODESET));
+    }
+        
 }

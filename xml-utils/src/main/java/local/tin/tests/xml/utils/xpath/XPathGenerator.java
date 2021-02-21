@@ -3,6 +3,7 @@ package local.tin.tests.xml.utils.xpath;
 import java.util.HashSet;
 import java.util.Set;
 import local.tin.tests.xml.utils.Common;
+import local.tin.tests.xml.utils.comparison.ComparisonExclusions;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -40,9 +41,10 @@ public class XPathGenerator {
      * 
      * @param document as Document
      * @param isLocalName as boolean
+     * @param attributes as ComparisonExclusions
      * @return Set of String
      */
-    public Set<String> getDocumentXPaths(Document document, boolean isLocalName) {
+    public Set<String> getDocumentXPaths(Document document, boolean isLocalName, ComparisonExclusions attributes) {
         Set<String> namespaces = new HashSet<>();
         NamedNodeMap attributs = document.getDocumentElement().getAttributes();
         int attributsLengh = attributs.getLength();
@@ -55,11 +57,11 @@ public class XPathGenerator {
         if (isLocalName) {
             xpathRoot = getNodeByLocalName(document.getFirstChild());
         }
-        traverse(document.getFirstChild().getChildNodes(), namespaces, xpathRoot, isLocalName);
+        traverse(document.getFirstChild().getChildNodes(), namespaces, xpathRoot, isLocalName, attributes);
         return namespaces;
     }
 
-    private void traverse(NodeList rootNode, Set<String> xpaths, String accumulatedPath, boolean isLocalName) {
+    private void traverse(NodeList rootNode, Set<String> xpaths, String accumulatedPath, boolean isLocalName, ComparisonExclusions attributes) {
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder stringBuilderAttributes = new StringBuilder();
         for (int index = 0; index < rootNode.getLength(); index++) {
@@ -77,7 +79,8 @@ public class XPathGenerator {
                     stringBuilderAttributes.setLength(0);
                     int attributsLengh = attributs.getLength();
                     for (int attributsIndex = 0; attributsIndex < attributsLengh; attributsIndex++) {
-                        if (!Common.getInstance().isNamespaceAttribute(attributs.item(attributsIndex))) {
+                        if (!Common.getInstance().isNamespaceAttribute(attributs.item(attributsIndex))
+                                && !isAttributeExcluded(attributes, attributs.item(attributsIndex).getLocalName(), aNode.getLocalName())) {
                             if (attributsIndex > 0) {
                                 stringBuilderAttributes.append(ATTRIBUTES_CONDITION);
                             }
@@ -91,24 +94,19 @@ public class XPathGenerator {
                 xpaths.add(stringBuilder.toString());
                 NodeList childNodes = aNode.getChildNodes();
                 if (childNodes.getLength() > 0) {
-                    traverse(childNodes, xpaths, stringBuilder.toString(), isLocalName);
+                    traverse(childNodes, xpaths, stringBuilder.toString(), isLocalName, attributes);
                 }
             }
         }
     }
 
-    private String getNodeNameWithoutNamespacePrefix(Node aNode) {
-        String nodeName = aNode.getNodeName();
-        if (nodeName.contains(Common.NAMESPACE_PREFIX_SEPARATOR)) {
-            nodeName = nodeName.substring(nodeName.indexOf(Common.NAMESPACE_PREFIX_SEPARATOR) + 1);
-        }
-        return nodeName;
-    }
-    
     private String getNodeByLocalName(Node node) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(WILDCARD_ALL).append(SQUARE_BRACKET_OPEN).append(Common.LOCAL_NAME).append(Common.EQUAL_SIGN).append(SINGLE_QUOTE).append(node.getLocalName()).append(SINGLE_QUOTE).append(SQUARE_BRACKET_CLOSE);
         return stringBuilder.toString();
     }
 
+    private boolean isAttributeExcluded(ComparisonExclusions attributes,  String attributName, String nodeName) {
+        return attributes != null && attributes.containsByNode(attributName, nodeName);
+    }
 }
