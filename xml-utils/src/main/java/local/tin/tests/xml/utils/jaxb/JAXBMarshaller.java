@@ -3,8 +3,8 @@ package local.tin.tests.xml.utils.jaxb;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -28,18 +28,20 @@ import org.xml.sax.SAXException;
 public class JAXBMarshaller {
 
     public static final String JAXB_XML_ENCODING = "UTF-8";
-    private static volatile Map<Object, JAXBContext> jaxbContexts;
+    private static Map<Object, JAXBContext> jaxbContexts;
     private static DocumentBuilderFactory dbFactory;
 
     private JAXBMarshaller() {
     }
 
-    public synchronized static JAXBMarshaller getInstance() throws ParserConfigurationException {
+    public static synchronized JAXBMarshaller getInstance() throws ParserConfigurationException {
         Map<Object, JAXBContext> temp = jaxbContexts;
         if (temp == null) {
             dbFactory = DocumentBuilderFactory.newInstance();
+            dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
+            dbFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); // compliant                  
             dbFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            jaxbContexts = new HashMap<>();
+            jaxbContexts = new ConcurrentHashMap<>();
         }
         return JAXBMarshallerHolder.INSTANCE;
     }
@@ -51,7 +53,7 @@ public class JAXBMarshaller {
 
     public String toString(Object pObject) throws Exception {
         try {
-            Class klass = pObject.getClass();
+            Class<?> klass = pObject.getClass();
             if (!jaxbContexts.containsKey(klass)) {
                 JAXBContext jAXBContext = JAXBContext.newInstance(klass);
                 jaxbContexts.put(klass, jAXBContext);
@@ -67,7 +69,7 @@ public class JAXBMarshaller {
         }
     }
 
-    public Object toObject(String xml, Class klass) throws Exception {
+    public Object toObject(String xml, Class<?> klass) throws Exception {
         try {
             if (!jaxbContexts.containsKey(klass)) {
                 JAXBContext jAXBContext = JAXBContext.newInstance(klass);
@@ -86,16 +88,15 @@ public class JAXBMarshaller {
         }
     }
 
-    private Document getDocumentFromXMLString(String xml) throws SAXException, IOException, ParserConfigurationException, org.xml.sax.SAXException {
+    private Document getDocumentFromXMLString(String xml) throws IOException, ParserConfigurationException, org.xml.sax.SAXException {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         InputSource is = new InputSource();
         is.setCharacterStream(new StringReader(xml));
-        Document doc = dBuilder.parse(is);
-        return doc;
+        return dBuilder.parse(is);
     }
 
     public Object toObject(String xml, String className) throws Exception {
-        Class klass;
+        Class<?> klass;
         try {
             klass = Class.forName(className);
         } catch (ClassNotFoundException ex) {

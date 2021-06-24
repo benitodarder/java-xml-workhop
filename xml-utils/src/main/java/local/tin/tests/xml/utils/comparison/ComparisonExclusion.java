@@ -63,10 +63,7 @@ public class ComparisonExclusion {
         if (!Objects.equals(this.nodeLocalName, other.nodeLocalName)) {
             return false;
         }
-        if (!Objects.equals(this.attributeName, other.attributeName)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.attributeName, other.attributeName);
     }
     
     

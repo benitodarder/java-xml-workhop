@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import local.tin.tests.xml.utils.Common;
 import local.tin.tests.xml.utils.comparison.ComparisonExclusions;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -21,6 +22,7 @@ public class XPathGenerator {
     public static final String SQUARE_BRACKET_CLOSE = "]";
     public static final String SQUARE_BRACKET_OPEN = "[";
     public static final String WILDCARD_ALL = "*";
+    private static final Logger LOGGER = Logger.getLogger(XPathGenerator.class);
     
     private XPathGenerator() {
     }
@@ -50,7 +52,7 @@ public class XPathGenerator {
         int attributsLengh = attributs.getLength();
         for (int attributsIndex = 0; attributsIndex < attributsLengh; attributsIndex++) {
             if (!Common.getInstance().isNamespaceAttribute(attributs.item(attributsIndex))) {
-
+                LOGGER.debug("Non namespace attribute. Skipping.");
             }
         }
         String xpathRoot = document.getFirstChild().getNodeName();

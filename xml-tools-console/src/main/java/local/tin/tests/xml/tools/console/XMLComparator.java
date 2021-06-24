@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import static local.tin.tests.xml.tools.console.XPathGenerator.MAX_ARGUMENTS;
-import static local.tin.tests.xml.tools.console.XPathGenerator.MIN_ARGUMENTS;
 import local.tin.tests.xml.utils.Builder;
 import local.tin.tests.xml.utils.comparison.ComparisonExclusion;
 import local.tin.tests.xml.utils.comparison.ComparisonExclusions;

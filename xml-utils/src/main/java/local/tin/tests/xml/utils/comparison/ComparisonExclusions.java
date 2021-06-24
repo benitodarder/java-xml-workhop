@@ -18,9 +18,8 @@ public class ComparisonExclusions {
     }
 
     public void put(String key, ComparisonExclusion comparisonExclusion) {
-        if (!map.containsKey(key)) {
-            map.put(key, new HashSet<>());
-        }
+        map.computeIfAbsent(key, k -> 
+                map.put(k, new HashSet<>()));
         map.get(key).add(comparisonExclusion);
     }
 

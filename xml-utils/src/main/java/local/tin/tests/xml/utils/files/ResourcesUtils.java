@@ -32,7 +32,7 @@ public class ResourcesUtils {
      * @return Properties
      * @throws IOException
      */
-    public Properties getPropertiesFile(Class klass, String fileName) throws IOException {
+    public Properties getPropertiesFile(Class<?> klass, String fileName) throws IOException {
         InputStreamReader fileInputStream = new InputStreamReader(klass.getResourceAsStream(fileName));
         Properties properties = new Properties();
         properties.load(fileInputStream);
@@ -48,7 +48,7 @@ public class ResourcesUtils {
      * @return String
      * @throws java.io.IOException
      */
-    public String getFileAsString(Class klass, String fileName) throws IOException {
+    public String getFileAsString(Class<?> klass, String fileName) throws IOException {
         InputStreamReader fileInputStream = new InputStreamReader(klass.getResourceAsStream(fileName));
         BufferedReader bufferedReader = new BufferedReader(fileInputStream);
         StringBuilder stringBuilder = new StringBuilder();
