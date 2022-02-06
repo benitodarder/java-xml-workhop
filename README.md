@@ -1,4 +1,4 @@
-# xml-workhop
+# java-xml-workhop
 
 Several small programs showcasing libraries and algorithms. 
 
